@@ -14,7 +14,7 @@ class ContactDAO:
                 results.append(r)
         return results
 
-    def getContactById(self, id):
+    def getContactByID(self, id):
         for r in self.data:
             if id == r[2]:
                 return r
