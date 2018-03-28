@@ -8,6 +8,7 @@ class UserDAO:
     def getAllUsers(self):
         return self.data
 
+
     def getUserById(self, id):
         for r in self.data:
             if id == r[0]:

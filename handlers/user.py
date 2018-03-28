@@ -21,6 +21,15 @@ class UserHandler:
         for r in results:
             mapped_results.append(self.mapToDict(r))
         return jsonify(User = mapped_results)
+
+    #receives id of owner of contacts
+    def getAllContacts(self, id):
+        dao = UserDAO()
+        result = dao.getAllContacts(id)
+        if result is None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            m
     
     def getUserById(self, id):
         dao = UserDAO()
