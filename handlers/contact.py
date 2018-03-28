@@ -1,17 +1,14 @@
 from flask import jsonify
 from dao.contactDAO import ContactDAO
 
-
+#contact table: isContactID, contactOfID, contactID
 class ContactHandler:
 
     def mapToDict(self, row):
         result = {}
-        result['userID'] = row[0]
-        result['fName'] = row[1]
-        result['lName'] = row[2]
-        result['email'] = row[3]
-        result['phone'] = row[4]
-        result['password'] = row[5]
+        result['isContactID'] = row[0]
+        result['contactOfID'] = row[1]
+        result['contactID'] = row[2]
         return result
 
     def getAllContactsFor(self, userID):
@@ -20,12 +17,12 @@ class ContactHandler:
         mapped_results = []
         for r in result:
             mapped_results.append(self.mapToDict(r))
-        return jsonify(User=mapped_results)
+        return jsonify(Contacts=mapped_results)
 
 
-    def getContactById(self, id):
+    def getContactByID(self, id):
         dao = ContactDAO()
-        result = dao.getContactById(id)
+        result = dao.getContactByID(id)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
         else:

@@ -1,9 +1,9 @@
 from flask import Flask
 from handlers.group import GroupHandler
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from handlers.contact import ContactHandler
-=======
->>>>>>> GroupsRoutes
+#=======
+#>>>>>>> GroupsRoutes
 app = Flask(__name__)
 
 
@@ -53,7 +53,6 @@ def addToGroup():
 def getGroupByID(id):
     return GroupHandler().getGroupById(id)
 
-#
 
 
 if __name__ == '__main__':
