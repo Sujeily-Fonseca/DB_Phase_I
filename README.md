@@ -4,13 +4,13 @@
 1. Understand the design, implementation and use of an application backed by a database system.
 2. Understand the use of the E-R model for database application design.
 3. Gain experience by implementing applications using layers of increasing complexity and fairly complex data structures.
-4. Gain further experience with Web programming concepts including REST and HTTP
+4. Gain further experience with Web programming concepts including REST and HTTP.
 
 # General Overview
 Simple UI and the backend of an application used for messaging in a social context. The application allows these operations, backed by a database engine:
    1. Register a user with the application
    2. Create a chat group with a given name
-   3. Add a user to your contacts list based on name, last name, and either 1) phone or 2) email address.
+   3. Add a user to your contacts list based on name, last name, and either 1) phone or 2) email address
    4. Add a contact to a chat group
    5. Remove a user from a chat group
    6. Remove a user from the contacts list
