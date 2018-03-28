@@ -23,7 +23,7 @@ class ContactHandler:
         return jsonify(User=mapped_results)
 
 
-    def getContactById(self, id):
+    def getContactByID(self, id):
         dao = ContactDAO()
         result = dao.getContactById(id)
         if result is None:

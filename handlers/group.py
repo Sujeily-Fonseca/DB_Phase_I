@@ -39,12 +39,18 @@ class GroupHandler:
             mapped = self.mapToDict(result)
             return jsonify(Group=mapped)
 
-    def getOwnerByGroupId(self, id):
+    def getOwnerOfGroup(self, id):
         dao = GroupDAO()
-        result = dao.getOwnerByGroupId(id)
+        result = dao.getOwnerOfGroup(id)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
-        else:
-            mapped = self.mapToDict(result)
-            return jsonify(Owner=mapped)
+        return result
 
+    def searchGroupByName(self,args):
+        name = args.get('name')
+        dao = GroupDAO()
+        result = dao.searchGroupByName(name)
+        mapped_result = []
+        for r in result:
+            mapped_result.append(self.mapToDict(r))
+        return jsonify(Groups=mapped_result)

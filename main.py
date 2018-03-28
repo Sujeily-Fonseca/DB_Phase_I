@@ -1,9 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 from handlers.group import GroupHandler
-<<<<<<< HEAD
 from handlers.contact import ContactHandler
-=======
->>>>>>> GroupsRoutes
+from handlers.message import MessageHandler
+from handlers.user import UserHandler
 app = Flask(__name__)
 
 
@@ -15,45 +14,75 @@ def root():
 def messageApp():
     return "Welcome to DB Messaging App!"
 
-@app.route('/MessageApp/login')
+
+@app.route('/MessageApp/Auth/login')
 def login():
     #store user ID
     return "You are now logged in."
 
-@app.route('/MessageApp/register')
+@app.route('/MessageApp/Auth/register')
 def register():
     return "You are now registered as name and last name"
 
-@app.route('/MessageApp/login/menu')
-def menu():
-    #GroupHandler().getAllGroups()
-    ContactHandler().getAllContactsFor(userID)
-    return "Showing contacts and chats"
+#USER
 
-@app.route('/MessageApp/login/menu/contacts')
+
+#CONTACT
+
+@app.route('/MessageApp/contacts')
 def contacts():
-    ContactHandler.getAllContactsFor(userID)
+    #ContactHandler.getAllContactsFor()
     return "This is your list of contacts"
 
-@app.route('/MessageApp/login/menu/contacts/<int:id>')
+@app.route('/MessageApp/contacts/<int:id>')
 def contactByID():
     ContactHandler().getContactByID(id)
     return "This contact"
 
-@app.route('/MessageApp/login/menu/chats')
-def chats():
-    handler = GroupHandler()
-    return handler.getAllGroups()
+#CHATS
 
-@app.route('/MessageApp/login/menu/chats/add')
+@app.route('/MessageApp/chats/add')                         #WORKS
 def addToGroup():
     return 'Contact has been added to the group chat!'
 
-@app.route('/MessageApp/login/menu/chats/<int:id>')
+@app.route('/MessageApp/chats/<int:id>')                    #WORKS
 def getGroupByID(id):
     return GroupHandler().getGroupById(id)
 
-#
+@app.route('/MessageApp/chats')                             #WORKS
+def searchGroupByName():
+    if request.args:
+        return GroupHandler().searchGroupByName(request.args)
+    else:
+        handler = GroupHandler()
+        return handler.getAllGroups()
+
+#@app.route('/MessageApp/chats/user/<int:uid>')
+#def GroupsOfUserId():
+#    return
+@app.route('/MessageApp/chats/<int:id>/owner')  #WORKS
+def getOwnerFromChatId(id):
+    return UserHandler().getUserById(GroupHandler().getOwnerOfGroup(id))
+
+
+#MESSAGES AND CHATS
+
+@app.route('/MessageApp/messages/chats/<int:cid>') #WORKS
+def messagesFromGroupId(cid):
+    return MessageHandler().searchMessagesByGroupId(cid)
+
+@app.route('/MessageApp/messages/chats/<int:cid>/user/<int:uid>') #WORKS
+def messagesOfUserFromGroup(cid,uid):
+    return MessageHandler().searchMessagesOfUserFromGroup(cid,uid)
+
+@app.route('/MessageApp/messages') #WORKS
+def messagesByChatName():
+    handler = MessageHandler()
+    return handler.getAllMessages()
+
+@app.route('/MessageApp/messages/<int:uid>') #Todos los mensajes de un usuario sin importar chat #WORKS
+def messagesByUserId(uid):
+    return MessageHandler().searchMessagesByUserId(uid)
 
 
 if __name__ == '__main__':

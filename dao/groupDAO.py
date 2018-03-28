@@ -20,14 +20,15 @@ class GroupDAO:
                 return r
         return None
 
-    def getGroupByName(self, phone):
+    def getOwnerOfGroup(self, id):
         for r in self.data:
-            if phone == r[2]:
-                return r
+            if id == r[0]:
+                return r[3]
         return None
 
-    def getOwnerByGroupId(self, id):
+    def searchGroupByName(self,name):
+        result = []
         for r in self.data:
-            if id == r[3]:
-                return r
-        return None
+            if name == r[1]:
+                result.append(r)
+        return result
