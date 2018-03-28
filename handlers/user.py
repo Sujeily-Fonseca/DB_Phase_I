@@ -1,6 +1,7 @@
 from flask import jsonify
 from dao.userDAO import UserDAO
 
+
 #user table: userID, fName, lName, email, phone, password
 class UserHandler:
     
@@ -18,18 +19,9 @@ class UserHandler:
         dao = UserDAO()
         result = dao.getAllUsers()
         mapped_results = []
-        for r in results:
+        for r in result:
             mapped_results.append(self.mapToDict(r))
         return jsonify(User = mapped_results)
-
-    #receives id of owner of contacts
-    def getAllContacts(self, id):
-        dao = UserDAO()
-        result = dao.getAllContacts(id)
-        if result is None:
-            return jsonify(Error="NOT FOUND"), 404
-        else:
-            m
     
     def getUserById(self, id):
         dao = UserDAO()
