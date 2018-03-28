@@ -17,7 +17,6 @@ class MessageDAO:
     def getAllMessages(self):
         return self.data
 
-
     def searchMessagesByGroupId(self, id):
         result = []
         for r in self.data:
