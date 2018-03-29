@@ -20,7 +20,7 @@ class HashtagDAO:
         result = []
         for r in self.data:
             if hashName == r[1]:
-                result.append(r[2])
+                result.append(r[0])
         return result
 
     def getHashtagsInMessage(self,messageID):
