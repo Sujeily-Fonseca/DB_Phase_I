@@ -3,15 +3,15 @@
 
 class ContactDAO:
     def __init__(self):
-        # user1 = hardcoded example
+        C1 = [1, 1, 2]
         self.data = []
-        # self.data.append examples
+        self.data.append(C1)
 
     def getAllContactsFor(self, userID):
         results = []
         for r in self.data:
             if userID == r[1]:
-                results.append(r)
+                results.append(r[2])
         return results
 
     def getContactByID(self, id):

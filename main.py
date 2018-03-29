@@ -27,15 +27,15 @@ def register():
 
 #USER
 
-@app.route('/MessageApp/users')
+@app.route('/MessageApp/users')                   #WORKS
 def getAllUsers():
     return UserHandler().getAllUsers()
 
 #CONTACT
 
-@app.route('/MessageApp/contacts/<int:cid>')
+@app.route('/MessageApp/contacts/<int:cid>')           #WORKS
 def contacts(cid):
-    return ContactHandler.getAllContactsFor(cid)
+    return ContactHandler().getAllContactsFor(cid)
 
 #CHATS
 
@@ -54,17 +54,15 @@ def searchGroupByName():
     else:
         handler = GroupHandler()
         return handler.getAllGroups()
+    
 
+@app.route('/MessageApp/chats/user/<int:uid>')
+def UsersOfGroupId(uid):
+    return ParticipantsHandler().getAllGroupsForUser(uid)
 
-
-
-#@app.route('/MessageApp/chats/user/<int:uid>')
-#def UsersOfGroupId(uid):
-#    return ParticipantsHandler().getAllGroupsForUser(uid)
-
-#@app.route('/MessageApp/user/chats/<int:cid>')
-#def GroupsOfUserId(cid):
-#    return ParticipantsHandler().getAllUsersOnGroup(cid)
+@app.route('/MessageApp/user/chats/<int:cid>')
+def GroupsOfUserId(cid):
+    return ParticipantsHandler().getAllUsersOnGroup(cid)
 
 
 

@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.reactionDAO import reactionDAO
+from dao.reactionDAO import ReactionDAO
 
 #contact table: reaction, lvalue, isValid, userID, msgID
 
