@@ -3,6 +3,7 @@ from handlers.group import GroupHandler
 from handlers.contact import ContactHandler
 from handlers.message import MessageHandler
 from handlers.user import UserHandler
+from handlers.participants import ParticipantsHandler
 app = Flask(__name__)
 
 
@@ -26,18 +27,15 @@ def register():
 
 #USER
 
+@app.route('/MessageApp/users')
+def getAllUsers():
+    return UserHandler().getAllUsers()
 
 #CONTACT
 
-@app.route('/MessageApp/contacts')
-def contacts():
-    #ContactHandler.getAllContactsFor()
-    return "This is your list of contacts"
-
-@app.route('/MessageApp/contacts/<int:id>')
-def contactByID():
-    ContactHandler().getContactByID(id)
-    return "This contact"
+@app.route('/MessageApp/contacts/<int:cid>')
+def contacts(cid):
+    return ContactHandler.getAllContactsFor(cid)
 
 #CHATS
 
@@ -57,9 +55,20 @@ def searchGroupByName():
         handler = GroupHandler()
         return handler.getAllGroups()
 
+
+
+
 #@app.route('/MessageApp/chats/user/<int:uid>')
-#def GroupsOfUserId():
-#    return
+#def UsersOfGroupId(uid):
+#    return ParticipantsHandler().getAllGroupsForUser(uid)
+
+#@app.route('/MessageApp/user/chats/<int:cid>')
+#def GroupsOfUserId(cid):
+#    return ParticipantsHandler().getAllUsersOnGroup(cid)
+
+
+
+
 @app.route('/MessageApp/chats/<int:id>/owner')  #WORKS
 def getOwnerFromChatId(id):
     return UserHandler().getUserById(GroupHandler().getOwnerOfGroup(id))
