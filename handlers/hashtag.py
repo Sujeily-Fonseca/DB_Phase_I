@@ -1,5 +1,7 @@
 from flask import jsonify
 from dao.hashtagDAO import HashtagDAO
+from dao.messageDAO import MessageDAO
+from handlers.message import MessageHandler
 
 #hashtag table: hashtagID, hashstring, foundIn
 
@@ -25,7 +27,7 @@ class HashtagHandler:
         results = dao.getHashtagByName(hashName)
         mapped_results = []
         for r in results:
-            mapped_results.append(self.mapToDict(r))
+            mapped_results.append(MessageHandler().mapToDict(MessageDAO().getMessageByID(r)))
         return jsonify(HashtagNames=mapped_results)
 
     def getHashtagsInMessage(self,messageID):
