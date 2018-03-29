@@ -23,8 +23,6 @@ class MessageHandler:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Messages=mapped_results)
 
-
-
     def searchMessagesByGroupId(self, id):
         dao = MessageDAO()
         result = dao.searchMessagesByGroupId(id)
@@ -48,4 +46,3 @@ class MessageHandler:
         for r in result:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Messages=mapped_results)
-
