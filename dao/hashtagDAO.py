@@ -3,7 +3,6 @@
 class HashtagDAO:
     def __init__(self):
         #hardcoded examples
-        
         self.data = []
         #append examples
 
