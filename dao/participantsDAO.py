@@ -1,4 +1,5 @@
 #participants table: participantID, groupID, userID
+from handlers.user import UserHandler
 class ParticipantsDAO:
     def __init__(self):
         # user1 = hardcoded example
