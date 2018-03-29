@@ -1,4 +1,4 @@
-#contact table: reaction, lvalue, isValid, userID, msgID
+#reaction table: lID, lvalue, isValid, userID, msgID
 
 class ReactionDAO:
     def __init__(self):
