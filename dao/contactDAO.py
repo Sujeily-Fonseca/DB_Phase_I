@@ -1,6 +1,5 @@
 #contact table: isContactID, contactOfID, contactID
 
-
 class ContactDAO:
     def __init__(self):
         C1 = [1, 1, 2]

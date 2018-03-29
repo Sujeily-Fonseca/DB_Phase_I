@@ -4,7 +4,7 @@ class UserDAO:
         U1 = [1, 'Graciany', 'Lebron' , 'graciany.james@upr.edu' ,'7877093423','suiquitraqui']
         U2 = [2, 'Lianne','Sanchez', 'lianne.sanchez@ipr.edu', '7877093423', 'dblife']
         U3 = [3, 'Samuel', 'gonzalez', 'lily@aim.com', '7877889090', '123987']
-        U4 = [4, 'Sujeily', 'Fonseca', 'sujeily@yahoo.com','erdiagrams']
+        U4 = [4, 'Sujeily', 'Fonseca', 'sujeily@yahoo.com','7877093423', 'erdiagrams']
         U5 = [5, 'Onix', 'Tarrats', 'onix@yahoo.com', '8009004040', 'elmiedosedejaenlagaveta']
 
         self.data = []

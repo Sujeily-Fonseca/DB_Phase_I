@@ -1,8 +1,6 @@
 from flask import jsonify
+from dao.contactDAO import ContactDAO
 from dao.participantsDAO import ParticipantsDAO
-from dao.groupDAO import GroupDAO
-from handlers.user import UserHandler
-from handlers.group import GroupHandler
 #participants table: participantID, groupID, userID
 class ParticipantsHandler:
 
@@ -26,5 +24,5 @@ class ParticipantsHandler:
         result = dao.getAllGroupsForUser(userID)
         mapped_results = []
         for r in result:
-            mapped_results.append(GroupDAO().mapToDict(r))
+            mapped_results.append(self.mapToDict(r))
         return jsonify(Groups=mapped_results)
