@@ -23,13 +23,13 @@ class ReactionDAO:
     def getAllUserDislikes(self, userID):
         results = []
         for r in self.data:
-            if (userID == r[3] and !isValid and !lvalue):
+            if (userID == r[3] and not isValid and not lvalue):
                 results.append(r)
         return results
 
     def getAllMessageDislikes(self, msgID):
         results = []
         for r in self.data:
-            if (msgID == r[4] and !isValid and !lvalue):
+            if (msgID == r[4] and not isValid and not lvalue):
                 results.append(r)
         return results
