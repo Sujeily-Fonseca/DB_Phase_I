@@ -1,6 +1,7 @@
 from flask import jsonify
 from dao.reactionDAO import ReactionDAO
-
+from dao.messageDAO import MessageDAO
+from handlers.message import MessageHandler
 #reaction table: lID, lvalue, isValid, userID, msgID
 
 class ReactionHandler:
@@ -15,6 +16,7 @@ class ReactionHandler:
         result['msgID'] = row[4]
         return result
 
+#EDITIG
     def getAllUserLikes(self, userID):
         dao = ReactionDAO()
         result = dao.getAllUserLikes(userID)

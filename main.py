@@ -58,11 +58,11 @@ def searchGroupByName():
         return handler.getAllGroups()
 
 
-@app.route('/MessageApp/chats/user/<int:uid>')
+@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
 
-@app.route('/MessageApp/user/chats/<int:cid>')
+@app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS
 def GroupsOfUserId(cid):
     return ParticipantsHandler().getAllUsersOnGroup(cid)
 
@@ -93,7 +93,7 @@ def messagesByUserId(uid):
 
 #REACTIONS
 
-@app.route('/MessageApp/likes/<int:id>')                                    #WORKS
+@app.route('/MessageApp/likes/<int:id>')                                    #WORKS---
 def likesFromUser(id):
     return ReactionHandler().getAllUserLikes(id)
 
@@ -105,9 +105,12 @@ def dislikesFromUser(id):
 def allMessagesLikes(mid):
     return ReactionHandler().getAllMessageLikes(mid)
 
+
 @app.route('/MessageApp/messagesdislikes/<int:mid>')                        #WORKS
-def allMessagesDisslikes(mid):
+def allMessagesDislikes(mid):
     return ReactionHandler().getAllMessageDislikes(mid)
+
+#HASHTAGS
 
 @app.route('/MessageApp/hashtags')                                          #WORKS
 def getAllHashtagsByName():

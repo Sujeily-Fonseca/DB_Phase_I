@@ -46,3 +46,10 @@ class MessageDAO:
             if msgID == r[6]:
                 result.append(r)
         return result
+
+    def getMessageByMsgId(self, msgId):
+        result = []
+        for r in self.data:
+            if msgId == r[6]:
+                result.append(r)
+        return result

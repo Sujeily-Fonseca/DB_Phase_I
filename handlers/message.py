@@ -55,3 +55,11 @@ class MessageHandler:
         for r in result:
             mapped_results.append(self.mapToDict(r))
         return jsonify(RepliesTo = mapped_results)
+
+    def getMessageByMsgId(self, msgID):
+        dao = MessageDAO()
+        result = dao.getMessageByMsgId(msgID)
+        mapped_results = []
+        for r in result:
+            mapped_results.append(self.mapToDict(r))
+        return jsonify(RepliesTo=mapped_results)
