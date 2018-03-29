@@ -5,7 +5,6 @@ from dao.groupDAO import GroupDAO
 from handlers.user import UserHandler
 class ParticipantsDAO:
     def __init__(self):
-<<<<<<< HEAD
         P1 = [1,4,1]
         P2 = [2,3,1]
         P3 = [3,1,2]
@@ -15,15 +14,6 @@ class ParticipantsDAO:
         self.data.append(P2)
         self.data.append(P3)
         self.data.append(P4)
-
-=======
-        P1 = ['1', '1', '3']
-        P2 = ['2', '1', '4']
-        P3 = ['3', '2', '3']
-        self.data = []
-        self.data.append(P1)
-        self.data.append(P2)
->>>>>>> SGonzalez
 
     def getAllParticipants(self):
         return self.data

@@ -21,11 +21,8 @@ class UserHandler:
         mapped_results = []
         for r in result:
             mapped_results.append(self.mapToDict(r))
-<<<<<<< HEAD
-        return jsonify(User=mapped_results)
-=======
+
         return jsonify(Users=mapped_results)
->>>>>>> SGonzalez
     
     def getUserById(self, id):
         dao = UserDAO()

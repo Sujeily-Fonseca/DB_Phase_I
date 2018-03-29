@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return "ola k ase?"
+    return "Main Route"
 
 @app.route('/MessageApp')
 def messageApp():
@@ -19,7 +19,6 @@ def messageApp():
 
 @app.route('/MessageApp/Auth/login')
 def login():
-    #store user ID
     return "You are now logged in."
 
 @app.route('/MessageApp/Auth/register')
@@ -57,23 +56,14 @@ def searchGroupByName():
         return handler.getAllGroups()
     
 
-@app.route('/MessageApp/chats/user/<int:uid>')
+@app.route('/MessageApp/chats/user/<int:uid>')    #WORKS
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
 
-<<<<<<< HEAD
-#@app.route('/MessageApp/chats/user/<int:uid>')
-#def UsersOfGroupId(uid):
-#    return ParticipantsHandler().getAllGroupsForUser(uid)
 
-#@app.route('/MessageApp/user/chats/<int:cid>')
-#def GroupsOfUserId(cid):
-#    return ParticipantsHandler().getAllUsersOnGroup(cid)
-=======
-@app.route('/MessageApp/user/chats/<int:cid>')
+@app.route('/MessageApp/user/chats/<int:cid>')      #WORKS
 def GroupsOfUserId(cid):
     return ParticipantsHandler().getAllUsersOnGroup(cid)
->>>>>>> SGonzalez
 
 
 @app.route('/MessageApp/chats/<int:id>/owner')  #WORKS
@@ -117,5 +107,7 @@ def allMessagesLikes(mid):
 @app.route('/MessageApp/messagesdislikes/<int:mid>')
 def allMessagesDisslikes(mid):
     return ReactionHandler().getAllMessageDislikes(mid)
+
+
 if __name__ == '__main__':
     app.run()
