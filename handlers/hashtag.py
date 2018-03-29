@@ -34,4 +34,5 @@ class HashtagHandler:
         mapped_results = []
         for r in results:
             mapped_results.append(self.mapToDict(r))
-        return jsonify(MessagesWithHashtag=mapped_results)
+        return jsonify(MessageContainsHashtags=mapped_results)
+

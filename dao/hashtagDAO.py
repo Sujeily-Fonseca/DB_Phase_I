@@ -2,9 +2,16 @@
 
 class HashtagDAO:
     def __init__(self):
-        #hardcoded examples
+        H1 = [1, 'rule', 2]
+        H2 = [2, 'fly', 3]
+        H3 = [3, 'science', 2]
+        H4 = [4, 'friends', 3]
         self.data = []
-        #append examples
+        self.data.append(H1)
+        self.data.append(H2)
+        self.data.append(H3)
+        self.data.append(H4)
+
 
     def getAllHashtags(self):
         return self.data
