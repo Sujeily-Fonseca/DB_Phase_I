@@ -16,5 +16,5 @@ class ContactDAO:
         results = []
         for r in self.data:
             if userID == r[1]:
-                results.append(r)
+                results.append(r[2])
         return results
