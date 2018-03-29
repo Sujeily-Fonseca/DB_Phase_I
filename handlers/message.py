@@ -2,7 +2,7 @@ from flask import jsonify
 from dao.messageDAO import MessageDAO
 
 
-#message table: msgID, message, timeStamp, groupID, userID, lID
+#message table: msgID, message, timeStamp, groupID, userID, lID, repliesTo
 class MessageHandler:
 
     def mapToDict(self, row):
@@ -13,6 +13,7 @@ class MessageHandler:
         result['groupID'] = row[3]
         result['userID'] = row[4]
         result['lID'] = row[5]
+        result['repliesTo'] = row[6]
         return result
 
     def getAllMessages(self):
@@ -46,3 +47,11 @@ class MessageHandler:
         for r in result:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Messages=mapped_results)
+
+    def getRepliesForMessage(self, msgID):
+        dao = MessageDAO()
+        result = dao.getRepliesForMessage(msgID)
+        mapped_results = []
+        for r in result:
+            mapped_results.append(self.mapToDict(r))
+        return jsonify(RepliesTo = mapped_results)
