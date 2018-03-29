@@ -18,6 +18,12 @@ class MessageDAO:
     def getAllMessages(self):
         return self.data
 
+    def getMessageByID(self,mid):
+        for r in self.data:
+            if mid == r[0]:
+                return r
+        return None
+
     def searchMessagesByGroupId(self, id):
         result = []
         for r in self.data:
