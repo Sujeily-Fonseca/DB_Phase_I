@@ -21,7 +21,7 @@ class ParticipantsHandler:
         result = dao.getAllUsersOnGroup(groupID)
         mapped_results = []
         for r in result:
-            mapped_results.append(r)
+            mapped_results.append(UserHandler().mapToDict(UserDAO().getUserById(r)))
         return jsonify(User=mapped_results)
 
     def getAllGroupsForUser(self, userID):

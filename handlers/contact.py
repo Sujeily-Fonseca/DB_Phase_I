@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.contactDAO import ContactDAO
+from handlers.user import UserHandler
 from dao.userDAO import UserDAO
 #contact table: isContactID, contactOfID, contactID
 class ContactHandler:
@@ -18,6 +19,6 @@ class ContactHandler:
         result = dao.getAllContactsFor(userID)
         mapped_results = []
         for r in result:
-            mapped_results.append(self.mapToDict(UserDAO().getUserById(r)))
+            mapped_results.append(UserHandler().mapToDict(UserDAO().getUserById(r)))
         return jsonify(Contacts=mapped_results)
 

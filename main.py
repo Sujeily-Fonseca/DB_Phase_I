@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return "ola k ase?"
+    return "Home"
 
 @app.route('/MessageApp')                                                   #WORKS
 def messageApp():
@@ -37,7 +37,7 @@ def getAllUsers():
 
 @app.route('/MessageApp/contacts/<int:id>')
 def getAllContactsFor(id):
-    return ContactHandler.getAllContacts(id)
+    return ContactHandler().getAllContactsFor(id)
 
 #CHATS
 
@@ -93,7 +93,7 @@ def messagesByUserId(uid):
 
 #REACTIONS
 
-@app.route('/MessageApp/likes/<int:id>')                                    #WORKS---
+@app.route('/MessageApp/likes/<int:id>')                                    #WORKS
 def likesFromUser(id):
     return ReactionHandler().getAllUserLikes(id)
 
