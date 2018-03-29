@@ -1,9 +1,19 @@
+from handlers.user import UserHandler
+from handlers.group import GroupHandler
+from dao.groupDAO import GroupDAO
 #participants table: participantID, groupID, userID
 class ParticipantsDAO:
     def __init__(self):
-        # user1 = hardcoded example
+        P1 = [1,4,1]
+        P2 = [2,3,1]
+        P3 = [3,1,2]
+        P4 = [4,1,3]
         self.data = []
-        # self.data.append examples
+        self.data.append(P1)
+        self.data.append(P2)
+        self.data.append(P3)
+        self.data.append(P4)
+
 
     def getAllParticipants(self):
         return self.data

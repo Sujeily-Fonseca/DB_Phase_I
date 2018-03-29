@@ -19,12 +19,3 @@ class ContactHandler:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Contacts=mapped_results)
 
-
-    def getContactByID(self, id):
-        dao = ContactDAO()
-        result = dao.getContactByID(id)
-        if result is None:
-            return jsonify(Error="NOT FOUND"), 404
-        else:
-            mapped = self.mapToDict(result)
-            return jsonify(User=mapped)

@@ -3,6 +3,7 @@ from handlers.group import GroupHandler
 from handlers.contact import ContactHandler
 from handlers.message import MessageHandler
 from handlers.user import UserHandler
+from handlers.reaction import ReactionHandler
 from handlers.participants import ParticipantsHandler
 app = Flask(__name__)
 
@@ -56,8 +57,6 @@ def searchGroupByName():
         return handler.getAllGroups()
 
 
-
-
 #@app.route('/MessageApp/chats/user/<int:uid>')
 #def UsersOfGroupId(uid):
 #    return ParticipantsHandler().getAllGroupsForUser(uid)
@@ -65,8 +64,6 @@ def searchGroupByName():
 #@app.route('/MessageApp/user/chats/<int:cid>')
 #def GroupsOfUserId(cid):
 #    return ParticipantsHandler().getAllUsersOnGroup(cid)
-
-
 
 
 @app.route('/MessageApp/chats/<int:id>/owner')  #WORKS
@@ -93,6 +90,22 @@ def messagesByChatName():
 def messagesByUserId(uid):
     return MessageHandler().searchMessagesByUserId(uid)
 
+#REACTIONS
 
+@app.route('/MessageApp/likes/<int:id>')
+def likesFromUser(id):
+    return ReactionHandler().getAllUserLikes(id)
+
+@app.route('/MessageApp/dislikes/<int:id>')
+def dislikesFromUser(id):
+    return ReactionHandler().getAllUserDislikes(id)
+
+@app.route('/MessageApp/messageslikes/<int:mid>')
+def allMessagesLikes(mid):
+    return ReactionHandler().getAllMessageLikes(mid)
+
+@app.route('/MessageApp/messagesdislikes/<int:mid>')
+def allMessagesDisslikes(mid):
+    return ReactionHandler().getAllMessageDislikes(mid)
 if __name__ == '__main__':
     app.run()
