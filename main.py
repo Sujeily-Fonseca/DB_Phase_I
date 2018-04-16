@@ -29,6 +29,10 @@ def register():
 
 #USER
 
+@app.route('/MessageApp/users/<int:id>')                                             #WORKS
+def getUserByID(id):                                                        #siquitraqui
+    return UserHandler().getUserById(id)
+
 @app.route('/MessageApp/users')                                             #WORKS
 def getAllUsers():
     return UserHandler().getAllUsers()
@@ -93,20 +97,20 @@ def messagesByUserId(uid):
 
 #REACTIONS
 
-@app.route('/MessageApp/likes/<int:id>')                                    #WORKS
+@app.route('/MessageApp/likes/<int:id>')
 def likesFromUser(id):
     return ReactionHandler().getAllUserLikes(id)
 
-@app.route('/MessageApp/dislikes/<int:id>')                                 #WORKS
+@app.route('/MessageApp/dislikes/<int:id>')
 def dislikesFromUser(id):
     return ReactionHandler().getAllUserDislikes(id)
 
-@app.route('/MessageApp/messageslikes/<int:mid>')                           #WORKS
+@app.route('/MessageApp/messageslikes/<int:mid>')
 def allMessagesLikes(mid):
     return ReactionHandler().getAllMessageLikes(mid)
 
 
-@app.route('/MessageApp/messagesdislikes/<int:mid>')                        #WORKS
+@app.route('/MessageApp/messagesdislikes/<int:mid>')
 def allMessagesDislikes(mid):
     return ReactionHandler().getAllMessageDislikes(mid)
 
