@@ -30,8 +30,8 @@ def register():
 
 #USER
 
-@app.route('/MessageApp/users/<int:id>')                                             #WORKS
-def getUserByID(id):                                                        #siquitraqui
+@app.route('/MessageApp/users/<int:id>')                                    #WORKS
+def getUserByID(id):
     return UserHandler().getUserById(id)
 
 @app.route('/MessageApp/users')                                             #WORKS
@@ -63,14 +63,13 @@ def searchGroupByName():
         return handler.getAllGroups()
 
 
-@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS
+@app.route('/MessageApp/user/<int:uid>/chats/')                             #WORKS
 def UsersOfGroupId(uid):
-    return ParticipantsHandler().getAllGroupsForUser(uid)
+    return ParticipantsHandler().getAllGroupsForUser(uid)                   #Get all groups from a specific user
 
 @app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS
 def GroupsOfUserId(cid):
     return ParticipantsHandler().getAllUsersOnGroup(cid)
-
 
 @app.route('/MessageApp/chats/<int:id>/owner')                              #WORKS
 def getOwnerFromChatId(id):
@@ -83,9 +82,9 @@ def getOwnerFromChatId(id):
 def messagesFromGroupId(cid):
     return MessageHandler().searchMessagesByGroupId(cid)
 
-@app.route('/MessageApp/messages/chats/<int:cid>/user/<int:uid>')           #WORKS
-def messagesOfUserFromGroup(cid,uid):
-    return MessageHandler().searchMessagesOfUserFromGroup(cid,uid)
+@app.route('/MessageApp/user/<int:uid>/message/chats/<int:cid>')           #WORKS
+def messagesOfUserFromGroup(uid, cid):
+    return MessageHandler().searchMessagesOfUserFromGroup(uid, cid)          #Get all message in a chat from a specific user
 
 @app.route('/MessageApp/messages')                                          #WORKS
 def messagesByChatName():

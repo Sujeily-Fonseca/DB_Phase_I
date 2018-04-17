@@ -31,7 +31,7 @@ class MessageDAO:
                 result.append(r)
         return result
 
-    def searchMessagesOfUserFromGroup(self, cid, uid):
+    def searchMessagesOfUserFromGroup(self, uid, cid):
         result = []
         for r in self.data:
             if cid == r[3]:

@@ -32,15 +32,15 @@ class MessageHandler:
             mapped_result.append(self.mapToDict(r))
         return jsonify(Messages=mapped_result)
 
-    def searchMessagesOfUserFromGroup(self, cid, uid):
+    def searchMessagesOfUserFromGroup(self, uid, cid):
         dao = MessageDAO()
-        result = dao.searchMessagesOfUserFromGroup(cid,uid)
+        result = dao.searchMessagesOfUserFromGroup(uid, cid)
         mapped_results = []
         for r in result:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Messages=mapped_results)
 
-    def searchMessagesByUserId(self,id):
+    def searchMessagesByUserId(self, id):
         dao = MessageDAO()
         result = dao.searchMessagesByUserId(id)
         mapped_results = []
