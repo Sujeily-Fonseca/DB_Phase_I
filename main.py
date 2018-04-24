@@ -30,17 +30,22 @@ def register():
 
 #USER
 
-@app.route('/MessageApp/users/<int:id>')                                    #WORKS
+@app.route('/MessageApp/users/<int:id>')                                   # WORKS REMOTE DB
 def getUserByID(id):
     return UserHandler().getUserById(id)
 
-@app.route('/MessageApp/users')                                             #WORKS
+@app.route('/MessageApp/users')                                             #WORKS REMOTE DB
 def getAllUsers():
-    return UserHandler().getAllUsers()
+    if not request.args:
+        return UserHandler().getAllUsers()
+    else:
+        return UserHandler().searchUser(request.args)
+
+#    return UserHandler().getAllUsers()
 
 #CONTACT
 
-@app.route('/MessageApp/contacts/<int:id>')
+@app.route('/MessageApp/contacts/<int:id>')                                 # WORKS REMOTE DB
 def getAllContactsFor(id):
     return ContactHandler().getAllContactsFor(id)
 
@@ -63,13 +68,14 @@ def searchGroupByName():
         return handler.getAllGroups()
 
 
-@app.route('/MessageApp/user/<int:uid>/chats/')                             #WORKS
+@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS
 def UsersOfGroupId(uid):
-    return ParticipantsHandler().getAllGroupsForUser(uid)                   #Get all groups from a specific user
+    return ParticipantsHandler().getAllGroupsForUser(uid)
 
 @app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS
 def GroupsOfUserId(cid):
     return ParticipantsHandler().getAllUsersOnGroup(cid)
+
 
 @app.route('/MessageApp/chats/<int:id>/owner')                              #WORKS
 def getOwnerFromChatId(id):
@@ -82,9 +88,9 @@ def getOwnerFromChatId(id):
 def messagesFromGroupId(cid):
     return MessageHandler().searchMessagesByGroupId(cid)
 
-@app.route('/MessageApp/user/<int:uid>/message/chats/<int:cid>')           #WORKS
-def messagesOfUserFromGroup(uid, cid):
-    return MessageHandler().searchMessagesOfUserFromGroup(uid, cid)          #Get all message in a chat from a specific user
+@app.route('/MessageApp/messages/chats/<int:cid>/user/<int:uid>')           #WORKS
+def messagesOfUserFromGroup(cid,uid):
+    return MessageHandler().searchMessagesOfUserFromGroup(cid,uid)
 
 @app.route('/MessageApp/messages')                                          #WORKS
 def messagesByChatName():
@@ -117,12 +123,14 @@ def allMessagesDislikes(mid):
 #HASHTAGS
 
 @app.route('/MessageApp/hashtags')                                          #WORKS
-def getAllHashtagsByName():
+def getAllHashtags():
     if request.args:
-        return HashtagHandler().getHashtagByName(request.args)
+        return HashtagHandler().getHashtagByName(str(request.args))
     else:
         handler = HashtagHandler()
         return handler.getAllHashtags()
+
+
 
 @app.route('/MessageApp/hashtags/messages/<int:id>')                         #WORKS
 def hashtagInMessages(id):

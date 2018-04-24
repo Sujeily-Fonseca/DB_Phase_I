@@ -1,38 +1,88 @@
 #user table: userID, fName, lName, email, phone, password
+import psycopg2
+
 class UserDAO:
     def __init__(self):
-        U1 = [1, 'Graciany', 'Lebron' , 'graciany.james@upr.edu' ,'7877093423','suiquitraqui']
-        U2 = [2, 'Lianne','Sanchez', 'lianne.sanchez@ipr.edu', '7877093423', 'dblife']
-        U3 = [3, 'Samuel', 'gonzalez', 'lily@aim.com', '7877889090', '123987']
-        U4 = [4, 'Sujeily', 'Fonseca', 'sujeily@yahoo.com','7877093423', 'erdiagrams']
-        U5 = [5, 'Onix', 'Tarrats', 'onix@yahoo.com', '8009004040', 'elmiedosedejaenlagaveta']
-
-        self.data = []
-        self.data.append(U1)
-        self.data.append(U2)
-        self.data.append(U3)
-        self.data.append(U4)
-        self.data.append(U5)
+        self.conn = psycopg2.connect(database='postgres', user='postgres',
+                                     password='LiSSProject2018!', host='35.193.157.126')
 
 
     def getAllUsers(self):
-        return self.data
-
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getUserById(self, id):
-        for r in self.data:
-            if id == r[0]:
-                return r
-        return None
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE userID=%s;"
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        return result
 
     def getUserByPhone(self, phone):
-        for r in self.data:
-            if phone == r[4]:
-                return r
-        return None
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE phone=%s;"
+        cursor.execute(query, (phone,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getUserByEmail(self, email):
-        for r in self.data:
-            if email == r[3]:
-                return r
-        return None
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE email=%s;"
+        cursor.execute(query, (email,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUserByfName(self, fName):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE fName=%s;"
+        cursor.execute(query, (fName,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUsersByEmailAndFname(self, email, fName):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE fName=%s AND email=%s;"
+        cursor.execute(query, (fName, email,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUsersByPhoneAndFname(self, phone, fName):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE fName=%s AND phone=%s;"
+        cursor.execute(query, (fName, phone,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
+    def getUsersByPhoneAndEmail(self, phone, email):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE phone=%s AND email=%s;"
+        cursor.execute(query, (phone, email,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUsersByPhoneEmailAndfName(self,phone,email,fName):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM users WHERE phone=%s AND email=%s AND fName=%s;"
+        cursor.execute(query, (phone, email,fName))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

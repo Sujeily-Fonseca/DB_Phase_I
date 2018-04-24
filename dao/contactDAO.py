@@ -1,20 +1,15 @@
 #contact table: isContactID, contactOfID, contactID
-
+import psycopg2
 class ContactDAO:
     def __init__(self):
-        C1 = [1, 1, 2]
-        C2 = [2, 2, 1]
-        C3 = [3, 3, 1]
-        C4 = [4, 4, 1]
-        self.data = []
-        self.data.append(C1)
-        self.data.append(C2)
-        self.data.append(C3)
-        self.data.append(C4)
+        self.conn = psycopg2.connect(database='postgres', user='postgres',
+                                     password='LiSSProject2018!', host='35.193.157.126')
 
     def getAllContactsFor(self, userID):
-        results = []
-        for r in self.data:
-            if userID == r[1]:
-                results.append(r[2])
-        return results
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
+        cursor.execute(query, (userID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

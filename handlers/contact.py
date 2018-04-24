@@ -11,6 +11,12 @@ class ContactHandler:
         result['contactID'] = row[2]
         return result
 
+    def NameToDict(self, row):
+        result = {}
+        result['fName'] = row[0]
+        result['lName'] = row[1]
+        return result
+
     def getAllContacts(self):
         return self.data
 
@@ -19,6 +25,6 @@ class ContactHandler:
         result = dao.getAllContactsFor(userID)
         mapped_results = []
         for r in result:
-            mapped_results.append(UserHandler().mapToDict(UserDAO().getUserById(r)))
+            mapped_results.append(self.NameToDict(r))
         return jsonify(Contacts=mapped_results)
 

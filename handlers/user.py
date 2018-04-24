@@ -14,13 +14,19 @@ class UserHandler:
         result['phone'] = row[4]
         result['password'] = row[5]
         return result
-    
+
+    def nameToDict(self, row):
+        result = {}
+        result['fName'] = row[0]
+        result['lName'] = row[1]
+        return result
+
     def getAllUsers(self):
         dao = UserDAO()
         result = dao.getAllUsers()
         mapped_results = []
         for r in result:
-            mapped_results.append(self.mapToDict(r))
+            mapped_results.append(self.nameToDict(r))
 
         return jsonify(Users=mapped_results)
     
@@ -30,7 +36,7 @@ class UserHandler:
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
         else:
-            mapped = self.mapToDict(result)
+            mapped = self.nameToDict(result)
             return jsonify(User=mapped)
     
     def getUserByPhone(self, phone):
@@ -50,3 +56,31 @@ class UserHandler:
         else:
             mapped = self.mapToDict(result)
             return jsonify(User=mapped)
+
+    def searchUser(self, args):
+        phone = args.get("phone")
+        email = args.get("email")
+        fName = args.get("fName")
+        dao = UserDAO()
+        user_list = []
+        if (len(args) == 3) and phone and email and fName:
+            user_list = dao.getUsersByPhoneEmailAndfName(phone, email, fName)
+        elif (len(args) == 2) and phone and email:
+            user_list = dao.getUsersByPhoneAndEmail(phone, email)
+        elif (len(args) == 2) and phone and fName:
+            user_list = dao.getUsersByPhoneAndFname(phone, fName)
+        elif (len(args) == 2) and email and fName:
+            user_list = dao.getUsersByEmailAndFname(email, fName)
+        elif (len(args) == 1) and phone:
+            user_list = dao.getUserByPhone(phone)
+        elif (len(args) == 1) and email:
+            user_list = dao.getUserByEmail(email)
+        elif (len(args) == 1) and fName:
+            user_list = dao.getUserByfName(fName)
+        else:
+            return jsonify(Error = "Malformed query string"), 400
+        result_list = []
+        for row in user_list:
+            result = self.nameToDict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)

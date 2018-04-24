@@ -16,11 +16,11 @@ class HashtagDAO:
     def getAllHashtags(self):
         return self.data
 
-    def getHashtagByName(self,hashName):
+    def getHashtagByName(self, hashName):
         result = []
         for r in self.data:
-            if hashName == r[1]:
-                result.append(r[0])
+            if hashName == str(r[1]):
+                result.append(r)
         return result
 
     def getHashtagsInMessage(self,messageID):
