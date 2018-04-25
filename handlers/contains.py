@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.hashtagInMessageDAO import HashtagInMessageDAO
+from dao.containsDAO import HashtagInMessageDAO
 
 #hashtagInMessage: hashInMsgID, msgID, hashID
 class HashtagInMessage:

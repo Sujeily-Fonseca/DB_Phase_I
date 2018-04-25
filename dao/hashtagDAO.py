@@ -1,31 +1,25 @@
-#hashtag table: hashtagID, hashName, foundIn
+#hashtag table: hashtagID, hashString
+import psycopg2
 
 class HashtagDAO:
     def __init__(self):
-        H1 = [1, 'rule', 2]
-        H2 = [2, 'fly', 3]
-        H3 = [3, 'science', 2]
-        H4 = [4, 'friends', 3]
-        self.data = []
-        self.data.append(H1)
-        self.data.append(H2)
-        self.data.append(H3)
-        self.data.append(H4)
-
+        self.conn = psycopg2.connect(database='postgres', user='postgres',
+                                     password='LiSSProject2018!', host='35.193.157.126')
 
     def getAllHashtags(self):
-        return self.data
-
-    def getHashtagByName(self, hashName):
+        cursor = self.conn.cursor()
+        query = "SELECT DISTINCT hashString FROM hashtags;"
+        cursor.execute(query)
         result = []
-        for r in self.data:
-            if hashName == str(r[1]):
-                result.append(r)
+        for row in cursor:
+            result.append(row)
         return result
 
-    def getHashtagsInMessage(self,messageID):
-        result = []
-        for r in self.data:
-            if messageID == r[2]:
-                result.append(r)
+
+    #######CHECK THIS######
+    def getHashtagByID(self, hashtagID):
+        cursor = self.conn.cursor()
+        query = "SELECT hashString FROM hashtags WHERE hashtagID=%s;"
+        cursor.execute(query,(hashtagID,))
+        result = cursor.fetchone()
         return result

@@ -1,49 +1,53 @@
-#message table: msgID, message, timeStamp, groupID, userID, lID, repliesTo
+#message table: msgID, message, postTime, groupID, userID
+import psycopg2
+
 class MessageDAO:
     def __init__(self):
-        M0 = [0, '', 0, 0, 0, 0, 0]
-        M1 = [1, 'Hola', 12 , 1, 1, 4, 0]
-        M2 = [2, 'Como estas Pedro?', 1, 1, 1, 4, 1]
-        M3 = [3, 'Bien y tu Manuel?', 8, 4, 2, 4, 2]
-        M4 = [4, 'Todo chill', 10, 4, 1, 4, 0]
-        M5 = [5, 'Me alegro mucho', 13, 2, 2, 4, 4]
-
-        self.data = []
-        self.data.append(M1)
-        self.data.append(M2)
-        self.data.append(M3)
-        self.data.append(M4)
-        self.data.append(M5)
+        self.conn = psycopg2.connect(database='postgres', user='postgres',
+                                     password='LiSSProject2018!', host='35.193.157.126')
 
     def getAllMessages(self):
-        return self.data
-
-    def getMessageByID(self,mid):
-        for r in self.data:
-            if mid == r[0]:
-                return r
-        return None
-
-    def searchMessagesByGroupId(self, id):
+        cursor = self.conn.cursor()
+        query = "SELECT message, groupName, fName, lName FROM users NATURAL INNER JOIN messages NATURAL INNER JOIN groups;"
+        cursor.execute(query)
         result = []
-        for r in self.data:
-            if id == r[3]:
-                result.append(r)
+        for row in cursor:
+            result.append(row)
         return result
 
-    def searchMessagesOfUserFromGroup(self, uid, cid):
+    def getMessageByID(self,mid):
+        cursor = self.conn.cursor()
+        query = "SELECT message, fName, lName FROM messages NATURAL INNER JOIN users WHERE msgID =%s;"
+        cursor.execute(query,(mid,))
+        result = cursor.fetchone()
+        return result
+
+    def searchMessagesByGroupId(self, id):
+        cursor = self.conn.cursor()
+        query = "SELECT message, fName, lName FROM users NATURAL INNER JOIN message WHERE groupID = %s;"
+        cursor.execute(query,(id,))
         result = []
-        for r in self.data:
-            if cid == r[3]:
-                if uid == r[4]:
-                    result.append(r)
+        for row in cursor:
+            result.append(row)
+        return result
+
+
+    def searchMessagesOfUserFromGroup(self, uid, cid):
+        cursor = self.conn.cursor()
+        query = "SELECT message, postTime FROM messages WHERE userID = %s AND groupID = %s;"
+        cursor.execute(query,(uid,cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def searchMessagesByUserId(self, id):
+        cursor = self.conn.cursor()
+        query = "SELECT message, groupName FROM messages NATURAL INNER JOIN users WHERE userID = %s;"
+        cursor.execute(query,(id,))
         result = []
-        for r in self.data:
-            if id == r[4]:
-                result.append(r)
+        for row in cursor:
+            result.append(row)
         return result
 
     def getRepliesForMessage(self, msgID):
@@ -53,9 +57,13 @@ class MessageDAO:
                 result.append(r)
         return result
 
+    #verifica a cual mensaje msgID esta respondiendo (si alguno)
+    #def RepliesToMessage(self,msgID):
+
     def getMessageByMsgId(self, msgId):
         result = []
         for r in self.data:
             if msgId == r[6]:
                 result.append(r)
         return result
+

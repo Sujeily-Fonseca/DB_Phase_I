@@ -6,23 +6,33 @@ class GroupDAO:
                                      password='LiSSProject2018!', host='35.193.157.126')
 
     def getAllGroups(self):
-        return self.data
+        cursor = self.conn.cursor()
+        query = "SELECT groupName, fName, lName FROM groups NATURAL INNER JOIN users;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getGroupById(self, id):
-        for r in self.data:
-            if id == r[0]:
-                return r
-        return None
+        cursor = self.conn.cursor()
+        query = "SELECT groupName FROM groups WHERE groupID = %s;"
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        return result
 
     def getOwnerOfGroup(self, id):
-        for r in self.data:
-            if id == r[0]:
-                return r[3]
-        return None
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM groups NATURAL INNER JOIN users WHERE userID=%s;"
+        cursor.execute(query,(id,))
+        result = cursor.fetchone()
+        return result
 
     def searchGroupByName(self,name):
+        cursor = self.conn.cursor()
+        query = "SELECT groupID, groupName FROM groups WHERE groupName = %s;"
+        cursor.execute(query,(name,))
         result = []
-        for r in self.data:
-            if name == r[1]:
-                result.append(r)
+        for row in cursor:
+            result.append(row)
         return result
