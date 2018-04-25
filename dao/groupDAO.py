@@ -7,7 +7,7 @@ class GroupDAO:
 
     def getAllGroups(self):
         cursor = self.conn.cursor()
-        query = "SELECT groupName, fName, lName FROM groups NATURAL INNER JOIN users;"
+        query = "SELECT groupName, fName, lName FROM groups JOIN users;"   ##NOT SUPPOSED TO BE NATURAL JOIN
         cursor.execute(query)
         result = []
         for row in cursor:
