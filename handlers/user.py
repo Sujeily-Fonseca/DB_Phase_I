@@ -19,6 +19,14 @@ class UserHandler:
         result = {}
         result['fName'] = row[0]
         result['lName'] = row[1]
+        result['email'] = row[2]
+        result['phone'] = row[3]
+        return result
+
+    def ownerToDict(self, row):
+        result = {}
+        result['fName'] = row[0]
+        result['lName'] = row[1]
         return result
 
     def getAllUsers(self):

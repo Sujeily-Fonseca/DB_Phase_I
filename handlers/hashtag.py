@@ -10,12 +10,23 @@ class HashtagHandler:
 
     def mapToDict(self, row):
         result = {}
-        result['hashtagID'] = row[0]
-        result['hashName'] = row[1]
-        result['foundIn'] = row[2]
+        result['hashName'] = row[0]
         return result
 
-    def getAllHashtags(self):
+    def hashToDict(self, row):
+        result = {}
+        result['hashName'] = row[0]
+        result['message'] = row[1]
+        return result
+
+    def hashToDict(self, row):
+        result = {}
+        result['hashName'] = row[0]
+        result['message'] = row[1]
+        result['groupName'] = row[2]
+        return result
+
+    def getAllHashtags(self):#
         dao = HashtagDAO()
         results = dao.getAllHashtags()
         mapped_results = []
@@ -23,17 +34,23 @@ class HashtagHandler:
             mapped_results.append(self.mapToDict(r))
         return jsonify(Hashtags=mapped_results)
 
-    def getHashtagByName(self, hashName):
+    def getHashtagByName(self, args):
+        hashString = args.get('hashString')
         dao = HashtagDAO()
-        results = dao.getHashtagByName(hashName)
-        mapped_results = []
-        for r in results:
-            mapped_results.append(self.mapToDict(r))
-        return jsonify(HashtagNames=mapped_results)
+        hashtag_list = []
+        if (len(args) == 1) and hashString:
+            hashtag_list = dao.searchHashtagByName(hashString)
+        else:
+            return jsonify(Error="Malformed query string"), 400
+        result_list = []
+        for row in hashtag_list:
+            result = self.hashToDict(row)
+            result_list.append(result)
+        return jsonify(Hashtags=result_list)
 
-    def getHashtagsInMessage(self,messageID):
+    def getHashtagsInMessage(self,msgID):
         dao = HashtagDAO()
-        results = dao.getHashtagsInMessage(messageID)
+        results = dao.getHashtagsInMessage(msgID)
         mapped_results = []
         for r in results:
             mapped_results.append(self.mapToDict(r))

@@ -2,8 +2,8 @@
 import psycopg2
 class ContactDAO:
     def __init__(self):
-        self.conn = psycopg2.connect(database='postgres', user='postgres',
-                                     password='LiSSProject2018!', host='35.193.157.126')
+        self.conn = psycopg2.connect(database='postgres', user='liss',
+                                     password='LiSSMsgApp', host='35.193.157.126')
 
     def getAllContactsFor(self, userID):
         cursor = self.conn.cursor()

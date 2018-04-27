@@ -3,8 +3,8 @@ import psycopg2
 
 class HashtagDAO:
     def __init__(self):
-        self.conn = psycopg2.connect(database='postgres', user='postgres',
-                                     password='LiSSProject2018!', host='35.193.157.126')
+        self.conn = psycopg2.connect(database='postgres', user='liss',
+                                     password='LiSSMsgApp', host='35.193.157.126')
 
     def getAllHashtags(self):
         cursor = self.conn.cursor()
@@ -15,6 +15,26 @@ class HashtagDAO:
             result.append(row)
         return result
 
+    def searchHashtagByName(self, hashString):
+        cursor = self.conn.cursor()
+        query = "SELECT hashString,message, groupName FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN " \
+                "messages NATURAL INNER JOIN groups WHERE hashString = %s;"
+        cursor.execute(query, (hashString,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
+    def getHashtagsInMessage(self, msgID):
+        cursor = self.conn.cursor()
+        query = "SELECT hashString FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN" \
+                " messages WHERE msgID=%s;"
+        cursor.execute(query, (msgID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     #######CHECK THIS######
     def getHashtagByID(self, hashtagID):

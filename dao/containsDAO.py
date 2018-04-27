@@ -2,9 +2,9 @@
 
 class HashtagInMessageDAO:
     def __init__(self):
-        #harcoded exampples
-        self.data = []
-        #append
+        self.conn = psycopg2.connect(database='postgres', user='liss',
+                                     password='LiSSMsgApp', host='35.193.157.126')
+
 
     def getHashIn(self, msgID):
         result = []

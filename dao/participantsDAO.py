@@ -5,15 +5,9 @@ from dao.groupDAO import GroupDAO
 from handlers.user import UserHandler
 class ParticipantsDAO:
     def __init__(self):
-        P1 = [1,4,1]
-        P2 = [2,3,1]
-        P3 = [3,1,2]
-        P4 = [4,1,3]
-        self.data = []
-        self.data.append(P1)
-        self.data.append(P2)
-        self.data.append(P3)
-        self.data.append(P4)
+        self.conn = psycopg2.connect(database='postgres', user='liss',
+                                     password='LiSSMsgApp', host='35.193.157.126')
+
 
     def getAllParticipants(self):
         return self.data

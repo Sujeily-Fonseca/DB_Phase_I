@@ -2,16 +2,9 @@
 
 class ReactionDAO:
     def __init__(self):
-        R1 = [1, True, True, 1, 2]
-        R2 = [2, True, True, 3, 1]
-        R3 = [3, True, True, 2, 2]
-        R4 = [4, True, True, 4, 4]
+        self.conn = psycopg2.connect(database='postgres', user='liss',
+                                     password='LiSSMsgApp', host='35.193.157.126')
 
-        self.data = []
-        self.data.append(R1)
-        self.data.append(R2)
-        self.data.append(R3)
-        self.data.append(R4)
 
     def getAllUserLikes(self, userID):
         results = []
