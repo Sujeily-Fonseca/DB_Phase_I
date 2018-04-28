@@ -92,3 +92,11 @@ class UserHandler:
             result = self.nameToDict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+
+    def getUserContacts(self, userID):
+        dao = UserDAO()
+        result = dao.getUserContacts(userID)
+        mapped_results = []
+        for r in result:
+            mapped_results.append(self.ownerToDict(r))
+        return jsonify(Contacts=mapped_results)

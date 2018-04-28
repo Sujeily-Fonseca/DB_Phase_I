@@ -44,7 +44,7 @@ def getAllUsers():
 #CONTACT
 @app.route('/MessageApp/contacts/<int:id>')                                 # WORKS REMOTE DB
 def getAllContactsFor(id):
-    return ContactHandler().getAllContactsFor(id)
+    return UserHandler().getUserContacts(id)
 
 
 #MESSAGES AND CHATS

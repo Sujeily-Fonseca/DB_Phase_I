@@ -86,3 +86,12 @@ class UserDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getUserContacts(self,uid):
+        cursor = self.conn.cursor()
+        query = "SELECT fName, lName FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
+        cursor.execute(query,(uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
