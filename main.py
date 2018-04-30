@@ -6,7 +6,7 @@ from handlers.user import UserHandler
 from handlers.reaction import ReactionHandler
 from handlers.participants import ParticipantsHandler
 from handlers.hashtag import HashtagHandler
-from handlers.hashtagInMessage import HashtagInMessage
+from handlers.cotains import HashtagInMessage
 app = Flask(__name__)
 
 
@@ -40,8 +40,6 @@ def getAllUsers():
         return UserHandler().getAllUsers()
     else:
         return UserHandler().searchUser(request.args)
-
-#    return UserHandler().getAllUsers()
 
 #CONTACT
 
@@ -129,8 +127,6 @@ def getAllHashtags():
     else:
         handler = HashtagHandler()
         return handler.getAllHashtags()
-
-
 
 @app.route('/MessageApp/hashtags/messages/<int:id>')                         #WORKS
 def hashtagInMessages(id):

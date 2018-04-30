@@ -1,11 +1,11 @@
 #user table: userID, fName, lName, email, phone, password
+
 import psycopg2
 
 class UserDAO:
     def __init__(self):
         self.conn = psycopg2.connect(database='postgres', user='postgres',
                                      password='LiSSProject2018!', host='35.193.157.126')
-
 
     def getAllUsers(self):
         cursor = self.conn.cursor()

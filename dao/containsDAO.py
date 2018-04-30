@@ -1,37 +1,35 @@
-#participants table: participantID, groupID, userID
+#contains table: containsID, msgID, hashtagID
 
 import psycopg2
 
-class ParticipantsDAO:
+class HashtagInMessageDAO:
     def __init__(self):
         self.conn = psycopg2.connect(database='postgres', user='postgres',
                                      password='LiSSProject2018!', host='35.193.157.126')
 
-    def getAllParticipants(self):
+    def getAllHashtags(self):
         cursor = self.conn.cursor()
-        query = "SELECT participantID, userID, groupID FROM participants;"
+        query = "SELECT hashtagID, hashString FROM hashtags;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
-        
 
-    def getAllUsersOnGroup(self, groupID):
+    def getHashIn(self, msgID):
         cursor = self.conn.cursor()
-        query = "SELECT userID, fname, lname FROM users NATURAL INNER JOIN participants WHERE groupID=%s;"
-        cursor.execute(query, (groupID,))
+        query = "SELECT hashString FROM hashtags NATURAL INNER JOIN contains WHERE msgID=%s;"
+        cursor.execute(query, (msgID,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getAllGroupsForUser(self, userID):
+    def getMsgsWith(self, hashtagID):
         cursor = self.conn.cursor()
-        query = "SELECT groupID, groupName FROM groups NATURAL INNER JOIN participants WHERE userID=%s;"
-        cursor.execute(query, (userID,))
+        query = "SELECT message FROM messages NATURAL INNER JOIN contains WHERE hashtagID=%s;"
+        cursor.execute(query, (hashtagID,))
         result = []
         for row in cursor:
             result.append(row)
         return result
-
