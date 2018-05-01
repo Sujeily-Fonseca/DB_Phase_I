@@ -1,5 +1,4 @@
-# Social Messaging Application
-# LiSSMessageApp
+# Social Messaging Application: LiSSMessageApp
 
 # Objectives
 1. Understand the design, implementation and use of an application backed by a database system.
