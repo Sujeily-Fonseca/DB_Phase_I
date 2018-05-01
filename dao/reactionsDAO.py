@@ -45,3 +45,19 @@ class ReactionsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getNumberOfLikes(self,msgID):
+        cursor = self.conn.cursor()
+        query = "SELECT m.message, count(*) FROM reactions INNER JOIN messages AS m USING(msgID) WHERE lvalue='1' AND isValid='1' " \
+                "AND msgID=%s GROUP BY m.message;"
+        cursor.execute(query, (msgID,))
+        result = cursor.fetchone()
+        return result
+
+    def getNumberOfDislikes(self,msgID):
+        cursor = self.conn.cursor()
+        query = "SELECT m.message, count(*) FROM reactions INNER JOIN messages AS m USING(msgID) WHERE lvalue='0' AND isValid='1' " \
+                "AND msgID=%s GROUP BY m.message;"
+        cursor.execute(query,(msgID,))
+        result = cursor.fetchone()
+        return result

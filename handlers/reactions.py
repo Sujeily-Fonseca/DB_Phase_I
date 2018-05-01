@@ -26,6 +26,18 @@ class ReactionsHandler:
         result['message'] = row[1]
         return result
 
+    def numberOfLikesToDict(self,row):
+        result = {}
+        result['message'] = row[0]
+        result['likes'] = row[1]
+        return result
+
+    def numberOfDislikesToDict(self,row):
+        result = {}
+        result['message'] = row[0]
+        result['dislikes'] = row[1]
+        return result
+
     def getAllUserLikes(self, userID):
         dao = ReactionsDAO()
         result = dao.getAllUserLikes(userID)
@@ -57,4 +69,15 @@ class ReactionsHandler:
         for r in result:
             mapped_results.append(self.messagesReactionsToDict(r))
         return jsonify(MessageDislikes=mapped_results)
-		
+
+    def getNumberOfLikes(self,msgID):
+        dao = ReactionsDAO()
+        result = dao.getNumberOfLikes(msgID)
+        mapped_result = self.numberOfLikesToDict(result)
+        return jsonify(NumberOfLikes=mapped_result)
+
+    def getNumberOfDislikes(self, msgID):
+        dao = ReactionsDAO()
+        result = dao.getNumberOfLikes(msgID)
+        mapped_result = self.numberOfDislikesToDict(result)
+        return jsonify(NumberOfDislikes=mapped_result)
