@@ -10,7 +10,7 @@ class ParticipantsDAO:
 
     def getAllParticipants(self):
         cursor = self.conn.cursor()
-        query = "SELECT participantID, userID, groupID FROM participants;"
+        query = "SELECT fName, lName, groupName FROM users NATURAL INNER JOIN participants NATURAL INNER JOIN groups;"
         cursor.execute(query)
         result = []
         for row in cursor:

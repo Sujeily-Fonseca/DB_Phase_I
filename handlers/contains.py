@@ -1,7 +1,7 @@
 #contains table: containsID, msgID, hashtagID
+from dao.containsDAO import ContainsDAO
 
 from flask import jsonify
-from dao.containsDAO import HashtagInMessageDAO
 
 class ContainsHandler:
 

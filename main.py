@@ -123,42 +123,45 @@ def getAllHashtags():
 
 
 #PARTICIPANTS
-@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS
+@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS REMOTE DB
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
 
-@app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS
+@app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS REMOTE DB
 def GroupsOfUserId(cid):
     return ParticipantsHandler().getAllUsersOnGroup(cid)
 
+@app.route('/MessageApp/participants')                           #WORKS REMOTE DB
+def getAllParticipants():
+    return ParticipantsHandler().getAllParticipants()
 
 #REACTIONS
-@app.route('/MessageApp/likes/<int:id>')
+@app.route('/MessageApp/likes/<int:id>')                        #WORKS REMOTE DB
 def likesFromUser(id):
     return ReactionsHandler().getAllUserLikes(id)
 
 
-@app.route('/MessageApp/dislikes/<int:id>')
+@app.route('/MessageApp/dislikes/<int:id>')                     #WORKS REMOTE DB
 def dislikesFromUser(id):
     return ReactionsHandler().getAllUserDislikes(id)
 
 
-@app.route('/MessageApp/messageslikes/<int:mid>')
+@app.route('/MessageApp/messageslikes/<int:mid>')               #WORKS REMOTE DB
 def allMessagesLikes(mid):
     return ReactionsHandler().getAllMessageLikes(mid)
 
 
-@app.route('/MessageApp/messagesdislikes/<int:mid>')
+@app.route('/MessageApp/messagesdislikes/<int:mid>')            #WORKS REMOTE DB
 def allMessagesDislikes(mid):
     return ReactionsHandler().getAllMessageDislikes(mid)
 
 
 #CONTAINS
-@app.route('/MessageApp/hashtags/message/<int:mid>')                         
+@app.route('/MessageApp/hashtags/message/<int:mid>')            #WORKS REMOTE DB
 def HashIn(mid):
     return ContainsHandler().getHashIn(mid)
 
-@app.route('/MessageApp/message/hashtag/<int:hid>')                        
+@app.route('/MessageApp/message/hashtag/<int:hid>')             #WORKS REMOTE DB
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
 

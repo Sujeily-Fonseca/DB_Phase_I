@@ -10,7 +10,8 @@ class ReactionsDAO:
 
     def getAllUserLikes(self, userID):
         cursor = self.conn.cursor()
-        query = "SELECT msgID, message FROM users NATURAL INNER JOIN reactions WHERE lvalue='1' AND users.userID=%s;"
+        query = "SELECT msgID, message FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+                "WHERE lvalue='1' AND isValid='1' AND users.userID=%s"
         cursor.execute(query, (userID,))
         result = []
         for row in cursor:
@@ -28,7 +29,8 @@ class ReactionsDAO:
 
     def getAllUserDislikes(self, userID):
         cursor = self.conn.cursor()
-        query = "SELECT msgID, message FROM users NATURAL INNER JOIN reactions WHERE lvalue='0' AND users.userID=%s"
+        query = "SELECT msgID, message FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+                "WHERE lvalue='0' AND isValid='1' AND users.userID=%s"
         cursor.execute(query, (userID,))
         result = []
         for row in cursor:

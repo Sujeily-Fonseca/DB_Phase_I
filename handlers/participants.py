@@ -1,5 +1,4 @@
 #participants table: participantID, groupID, userID
-
 from flask import jsonify
 from dao.participantsDAO import ParticipantsDAO
 
@@ -7,9 +6,9 @@ class ParticipantsHandler:
 
     def mapToDict(self, row):
         result = {}
-        result['participantID'] = row[0]
-        result['groupID'] = row[1]
-        result['userID'] = row[2]
+        result['fName'] = row[0]
+        result['lName'] = row[1]
+        result['groupName'] = row[2]
         return result
 
     def usersToDict(self, row):

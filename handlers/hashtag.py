@@ -1,8 +1,5 @@
 from flask import jsonify
 from dao.hashtagDAO import HashtagDAO
-from dao.messageDAO import MessageDAO
-from handlers.message import MessageHandler
-from dao.containsDAO import HashtagInMessageDAO
 
 #hashtag table: hashtagID, hashstring, foundIn
 
