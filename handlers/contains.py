@@ -1,28 +1,39 @@
-from flask import jsonify
-from dao.containsDAO import HashtagInMessageDAO
+#contains table: containsID, msgID, hashtagID
+from dao.containsDAO import ContainsDAO
 
-#hashtagInMessage: hashInMsgID, msgID, hashID
-class HashtagInMessage:
+from flask import jsonify
+
+class ContainsHandler:
 
     def mapToDict(self, row):
         result = {}
-        result['hashInMsgID'] = row[0]
+        result['containsID'] = row[0]
         result['msgID'] = row[1]
-        result['hashID'] = row[2]
+        result['hashtagID'] = row[2]
+        return result
+
+    def hashtagsToDict(self, row):
+        result = {}
+        result['hashString'] = row[0]
+        return result
+
+    def messagesToDict(self, row):
+        result = {}
+        result['message'] = row[0]
         return result
 
     def getHashIn(self, msgID):
-        dao = HashtagInMessageDAO()
+        dao = ContainsDAO()
         results = dao.getHashIn(msgID)
         mapped_results = []
         for r in results:
-            mapped_results.append(self.mapToDict(r))
+            mapped_results.append(self.hashtagsToDict(r))
         return jsonify(Hashtags=mapped_results)
 
-    def getMsgsWith(self,hashID):
-        dao = HashtagInMessageDAO()
-        results = dao.getMsgsWith(hashID)
+    def getMsgsWith(self,hashtagID):
+        dao = ContainsDAO()
+        results = dao.getMsgsWith(hashtagID)
         mapped_results = []
         for r in results:
-            mapped_results.append(self.mapToDict(r))
+            mapped_results.append(self.messagesToDict(r))
         return jsonify(Hashtags=mapped_results)

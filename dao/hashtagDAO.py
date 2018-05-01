@@ -25,17 +25,6 @@ class HashtagDAO:
             result.append(row)
         return result
 
-
-    def getHashtagsInMessage(self, msgID):
-        cursor = self.conn.cursor()
-        query = "SELECT hashString FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN" \
-                " messages WHERE msgID=%s;"
-        cursor.execute(query, (msgID,))
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
-
     #######CHECK THIS######
     def getHashtagByID(self, hashtagID):
         cursor = self.conn.cursor()
