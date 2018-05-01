@@ -1,6 +1,5 @@
 from flask import Flask, request
 from handlers.group import GroupHandler
-from handlers.contact import ContactHandler
 from handlers.message import MessageHandler
 from handlers.user import UserHandler
 from handlers.reactions import ReactionsHandler
@@ -70,14 +69,14 @@ def getAllContactsFor(id):
 
 
 #MESSAGES AND CHATS
-@app.route('/MessageApp/messages/groups/<int:cid>')                         #WORKS REMOTE DB
-def messagesFromGroupId(cid):
-    return MessageHandler().searchMessagesByGroupId(cid)
+@app.route('/MessageApp/messages/groups/<int:gid>')                         #WORKS REMOTE DB
+def messagesFromGroupId(gid):
+    return MessageHandler().searchMessagesByGroupId(gid)
 
 
-@app.route('/MessageApp/messages/groups/<int:cid>/user/<int:uid>')          #WORKS REMOTE DB
-def messagesOfUserFromGroup(uid,cid):
-    return MessageHandler().searchMessagesOfUserFromGroup(uid,cid)
+@app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>')          #WORKS REMOTE DB
+def messagesOfUserFromGroup(uid,gid):
+    return MessageHandler().searchMessagesOfUserFromGroup(uid,gid)
 
 
 @app.route('/MessageApp/messages')                                          #WORKS REMOTE DB
@@ -123,13 +122,13 @@ def getAllHashtags():
 
 
 #PARTICIPANTS
-@app.route('/MessageApp/chats/user/<int:uid>')                              #WORKS REMOTE DB
+@app.route('/MessageApp/groups/user/<int:uid>')                              #WORKS REMOTE DB
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
 
-@app.route('/MessageApp/user/chats/<int:cid>')                              #WORKS REMOTE DB
-def GroupsOfUserId(cid):
-    return ParticipantsHandler().getAllUsersOnGroup(cid)
+@app.route('/MessageApp/users/groups/<int:gid>')                              #WORKS REMOTE DB
+def GroupsOfUserId(gid):
+    return ParticipantsHandler().getAllUsersOnGroup(gid)
 
 @app.route('/MessageApp/participants')                           #WORKS REMOTE DB
 def getAllParticipants():
@@ -146,12 +145,12 @@ def dislikesFromUser(id):
     return ReactionsHandler().getAllUserDislikes(id)
 
 
-@app.route('/MessageApp/messageslikes/<int:mid>')               #WORKS REMOTE DB
+@app.route('/MessageApp/messagelikes/<int:mid>')               #WORKS REMOTE DB
 def allMessagesLikes(mid):
     return ReactionsHandler().getAllMessageLikes(mid)
 
 
-@app.route('/MessageApp/messagesdislikes/<int:mid>')            #WORKS REMOTE DB
+@app.route('/MessageApp/messagedislikes/<int:mid>')            #WORKS REMOTE DB
 def allMessagesDislikes(mid):
     return ReactionsHandler().getAllMessageDislikes(mid)
 
