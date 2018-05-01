@@ -144,6 +144,13 @@ def likesFromUser(id):
 def dislikesFromUser(id):
     return ReactionsHandler().getAllUserDislikes(id)
 
+@app.route('/MessageApp/numlikes/<int:id>')                     #WORKS REMOTE DB
+def numLikesFromUser(id):
+    return ReactionsHandler().getNumberOfLikes(id)
+
+@app.route('/MessageApp/numdislikes/<int:id>')                  #WORKS REMOTE DB
+def numDislikesFromUser(id):
+    return ReactionsHandler().getNumberOfDislikes(id)
 
 @app.route('/MessageApp/messagelikes/<int:mid>')               #WORKS REMOTE DB
 def allMessagesLikes(mid):
