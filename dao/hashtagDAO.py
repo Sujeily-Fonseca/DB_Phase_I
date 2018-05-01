@@ -41,5 +41,4 @@ class HashtagDAO:
         result = []
         for r in cursor:
             result.append(r)
-            print (result)
         return result
