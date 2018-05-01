@@ -7,7 +7,7 @@ class ContactDAO:
 
     def getAllContactsFor(self, userID):
         cursor = self.conn.cursor()
-        query = "SELECT fName, lName FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
+        query = "SELECT fName, lName, phone FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
         cursor.execute(query, (userID,))
         result = []
         for row in cursor:
