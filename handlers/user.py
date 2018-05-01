@@ -69,6 +69,7 @@ class UserHandler:
         phone = args.get("phone")
         email = args.get("email")
         fName = args.get("fName")
+        userName = args.get("userName")
         dao = UserDAO()
         user_list = []
         if (len(args) == 3) and phone and email and fName:
@@ -85,6 +86,8 @@ class UserHandler:
             user_list = dao.getUserByEmail(email)
         elif (len(args) == 1) and fName:
             user_list = dao.getUserByfName(fName)
+        elif (len(args) == 1) and userName:
+            user_list = dao.getUserByUserName(userName)
         else:
             return jsonify(Error = "Malformed query string"), 400
         result_list = []
