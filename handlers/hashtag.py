@@ -23,6 +23,14 @@ class HashtagHandler:
         result['groupName'] = row[2]
         return result
 
+    def hashUserToDict(self, row):
+        result = {}
+        result['hashtag'] = row[0]
+        result['username'] = row[1]
+        result['firstName'] = row[2]
+        result['lastName'] = row[3]
+        return result
+
     def getAllHashtags(self):#
         dao = HashtagDAO()
         results = dao.getAllHashtags()
@@ -53,3 +61,10 @@ class HashtagHandler:
             mapped_results.append(self.mapToDict(r))
         return jsonify(MessageContainsHashtags=mapped_results)
 
+    def getUsersForHashtag(self,hashtagID):
+        dao = HashtagDAO()
+        results = dao.getUsersForHashtag(hashtagID)
+        mapped_results = []
+        for r in results:
+            mapped_results.append(self.hashUserToDict(r))
+        return jsonify(UsersUsingHashtag=mapped_results)

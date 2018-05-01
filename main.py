@@ -121,6 +121,10 @@ def getAllHashtags():
         return HashtagHandler().getAllHashtags()
 
 
+@app.route('/MessageApp/hashtags/<int:hid>/user')            #WORKS REMOTE DB
+def usersWithHashtag(hid):
+    return HashtagHandler().getUsersForHashtag(hid)
+
 #PARTICIPANTS
 @app.route('/MessageApp/groups/user/<int:uid>')                              #WORKS REMOTE DB
 def UsersOfGroupId(uid):
@@ -166,6 +170,7 @@ def allMessagesDislikes(mid):
 @app.route('/MessageApp/hashtags/message/<int:mid>')            #WORKS REMOTE DB
 def HashIn(mid):
     return ContainsHandler().getHashIn(mid)
+
 
 @app.route('/MessageApp/message/hashtag/<int:hid>')             #WORKS REMOTE DB
 def MsgsWith(hid):
