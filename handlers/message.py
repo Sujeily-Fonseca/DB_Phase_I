@@ -46,6 +46,17 @@ class MessageHandler:
         result['postTime'] = row[4]
         return result
 
+    def msgInfoToDict(self, row):
+        result = {}
+        result['message'] = row[0]
+        result['response'] = row[1]
+        result['responseId'] = row[2]
+        result['likes'] = row[3]
+        result['dislikes'] = row[4]
+        result['userId'] = row[5]
+        result['msgId'] = row[6]
+        return result
+
     def getAllMessages(self):#
         dao = MessageDAO()
         results = dao.getAllMessages()
@@ -103,3 +114,11 @@ class MessageHandler:
         for r in result:
             mapped_results.append(self.msgToDict(r))
         return jsonify(Message=mapped_results)
+
+    def getMsgInfo(self, msgID):
+        dao = MessageDAO()
+        result = dao.getMsgInfo(msgID)
+        mapped_results = []
+        for r in result:
+            mapped_results.append(self.msgInfoToDict(r))
+        return jsonify(Message_Info=mapped_results)

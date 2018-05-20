@@ -76,3 +76,19 @@ class MessageDAO:
             result.append(row)
         return result;
 
+    def getMsgInfo(self,msgId):
+        cursor = self.conn.cursor()
+        query = "with M as (Select message, msgId, userId,replyId from messages natural inner join repliesTo),R as " \
+                "(Select replyId, message as responseMessage from messages as L, repliesTo as T where L.msgId=T.replyId), " \
+                "D as (Select msgId, count(*) as dislikes from reactions inner join messages AS A using(msgId) WHERE " \
+                "lValue='0' AND isValid='1' AND msgID=%s GROUP BY msgId), E as (Select msgId, count(*) as likes from " \
+                "reactions inner join messages as B using(msgId) where lValue='1' AND isValid='1' AND msgID=%s GROUP BY " \
+                "msgId) Select M.message,R.responseMessage, R.replyId,E.likes,D.dislikes, M.userId, M.msgId from " \
+                "M,R,D,E where M.replyId=R.replyId and M.msgId=D.msgId AND M.msgId=E.msgId AND M.msgId=%s;"
+        cursor.execute(query, (msgId,msgId,msgId))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result;
+
+

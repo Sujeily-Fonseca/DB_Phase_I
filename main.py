@@ -176,6 +176,10 @@ def HashIn(mid):
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
 
+#MEGAROUTE
+@app.route('/MessageApp/messageInformation/<int:mid>')
+def MsgInfo(mid):
+    return MessageHandler().getMsgInfo(mid)
 
 if __name__ == '__main__':
     app.run()
