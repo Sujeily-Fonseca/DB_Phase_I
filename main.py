@@ -106,13 +106,19 @@ def getGroupByID(id):
     return GroupHandler().getGroupById(id)
 
 
-@app.route('/MessageApp/groups')                                            #WORKS REMOTE DB
+@app.route('/MessageApp/groups', methods=['GET', 'POST', 'UPDATE'])                                            #WORKS REMOTE DB
 def searchGroupByName():
-    if request.args:
-        return GroupHandler().searchGroupByName(request.args)
-    else:
-        handler = GroupHandler()
-        return handler.getAllGroups()
+    if request.method == 'POST':
+        return GroupHandler().insertGroup(request.form)
+    elif request.method == 'GET':
+        if request.args:
+            return GroupHandler().searchGroupByName(request.args)
+        else:
+            handler = GroupHandler()
+            return handler.getAllGroups()
+    #elif request.method == 'UPDATE'
+
+
 
 #HASHTAGS
 @app.route('/MessageApp/hashtags')                                          #WORKS REMOTE DB
