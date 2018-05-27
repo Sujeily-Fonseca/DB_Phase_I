@@ -23,7 +23,7 @@ class ReactionsHandler:
     def usersReactionsToDict(self, row):
         result = {}
         result['msgID'] = row[0]
-        result['message'] = row[1]
+        #result['message'] = row[1]
         return result
 
     def numberOfLikesToDict(self,row):

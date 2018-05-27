@@ -10,7 +10,7 @@ class ReactionsDAO:
 
     def getAllUserLikes(self, userID):
         cursor = self.conn.cursor()
-        query = "SELECT msgID, message FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+        query = "SELECT msgID FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
                 "WHERE lvalue='1' AND isValid='1' AND users.userID=%s"
         cursor.execute(query, (userID,))
         result = []
@@ -29,7 +29,7 @@ class ReactionsDAO:
 
     def getAllUserDislikes(self, userID):
         cursor = self.conn.cursor()
-        query = "SELECT msgID, message FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+        query = "SELECT msgID FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
                 "WHERE lvalue='0' AND isValid='1' AND users.userID=%s"
         cursor.execute(query, (userID,))
         result = []
@@ -48,8 +48,8 @@ class ReactionsDAO:
 
     def getNumberOfLikes(self,msgID):
         cursor = self.conn.cursor()
-        query = "SELECT num from (SELECT m.message, count(*) FROM reactions INNER JOIN messages AS m USING(msgID) WHERE lvalue='1' AND isValid='1' " \
-                "AND msgID=%s GROUP BY m.message);"
+        query = "SELECT num from (SELECT m.message, count(*) as num FROM reactions INNER JOIN messages AS m USING(msgID) WHERE lvalue='1' AND isValid='1' " \
+                "AND msgID=%s GROUP BY m.message) as A;"
         cursor.execute(query, (msgID,))
         result = cursor.fetchone()
         return result
@@ -57,7 +57,7 @@ class ReactionsDAO:
     def getNumberOfDislikes(self,msgID):
         cursor = self.conn.cursor()
         query = "SELECT num from (SELECT m.message, count(*) as num FROM reactions INNER JOIN messages AS m USING(msgID) WHERE lvalue='0' AND isValid='1' " \
-                "AND msgID=%s GROUP BY m.message);"
+                "AND msgID=%s GROUP BY m.message) as A;"
         cursor.execute(query,(msgID,))
         result = cursor.fetchone()
         return result
@@ -69,40 +69,55 @@ class ReactionsDAO:
         result = []
         for row in cursor:
             result.append(row)
-        if(B'0' == result[0]):
+        print (len(result))
+        if( len(result) != 0 and B'0' == result[0]):
             return False
         return True
 
     def insertReactionToMsg(self, reactionVal, userID, msgID):
         cursor = self.conn.cursor()
 
-        #was liked and pressed like or was disliked and pressed dislike
-        if int(msgID) in self.getAllUserLikes(userID) and int(reactionVal) == 1\
-                or int(msgID) in self.getAllUserDislikes(userID) and int(reactionVal) == 0:
+        if (int(msgID) in (self.getAllUserLikes(userID)[0]) and int(reactionVal) == 1)\
+                or (int(msgID) in (self.getAllUserDislikes(userID)[0]) and int(reactionVal) == 0):
+            print("was liked and pressed like or was disliked and pressed dislike")
             query = "UPDATE reactions SET isValid= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
-        #was liked and pressed dislike
+        #
         elif int(msgID) in self.getAllUserLikes(userID) and int(reactionVal) == 0:
+            print("was liked and pressed dislike")
             query = "UPDATE reactions SET lValue= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
-        #was disliked and pressed like
+        #
         elif int(msgID) in self.getAllUserDislikes(userID) and int(reactionVal) == 1:
+            print("was disliked and pressed like")
             query = "UPDATE reactions SET lValue= B'1' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
-        #pressed like on a message that had been liked before,etc
-        elif ~self.validateReaction(msgID, userID):
+        #
+        elif not self.validateReaction(msgID, userID):
+            print("pressed like on a message that had been liked before,etc")
             query = "UPDATE reactions SET lValue = %s, isValid = B'1' where userID = %s and msgID = %s;"
             cursor.execute(query,(reactionVal, userID, msgID,))
 
-        #new reaction
+        #
         else:
+            print("new reaction")
             query = "INSERT INTO reactions (isValid, lValue, msgId, userId) values (B'1', %s, %s, %s);"
             cursor.execute(query, (reactionVal, msgID, userID,))
-        result = []
-        result.append(self.getNumberOfLikes(msgID))
-        result.append(self.getNumberOfDislikes(msgID))
         self.conn.commit()
+        result = []
+        x = self.getNumberOfLikes(msgID)
+        y = self.getNumberOfDislikes(msgID)
+        if not x is None:
+            result.append(x)
+        else:
+            result.append (0)
+
+        if not y is None:
+            result.append(y)
+        else:
+            result.append(0)
+
         return result

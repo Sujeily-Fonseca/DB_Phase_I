@@ -171,7 +171,7 @@ def allMessagesLikes(mid):
 def allMessagesDislikes(mid):
     return ReactionsHandler().getAllMessageDislikes(mid)
 
-@app.route('MessageApp/reactions', methods=['GET', 'POST'])
+@app.route('/MessageApp/reactions', methods=['GET', 'POST'])
 def allReactions():
     if request.method == 'POST':
         return ReactionsHandler().insertReactionToMsg(request.form)
