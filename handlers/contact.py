@@ -29,3 +29,25 @@ class ContactHandler:
             mapped_results.append(self.NameToDict(r))
         return jsonify(Contacts=mapped_results)
 
+    def build_contact_attributes(self, contactId):
+        result = {}
+        result['contact'] = contactId
+        return result
+
+    def insertContact(self, userId, form):
+        print("form: ", form)
+        if len(form)!=1:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            phone = form['form']
+            if userId and phone:
+                dao = ContactDAO()
+                result_list = dao.insertContact(userId, phone)
+                if len(result_list) != 0:
+                    result = self.build_contact_attributes(result_list)
+                    return jsonify(Contact_added=result), 201
+                else:
+                    return jsonify(Error="Could not add user"), 400
+            else:
+                jsonify(Error="Unexpected attributes in post request"), 400
+

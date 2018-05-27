@@ -65,9 +65,14 @@ def getAllUsers():
         return UserHandler().searchUser(request.args)
 
 #CONTACT
-@app.route('/MessageApp/contacts/<int:id>')                                 # WORKS REMOTE DB
+@app.route('/MessageApp/contacts/<int:id>',  methods=['GET', 'POST'])                                 # WORKS REMOTE DB
 def getAllContactsFor(id):
-    return UserHandler().getUserContacts(id)
+    if request.method == 'GET':
+        return UserHandler().getUserContacts(id)
+    elif request.method == 'POST':
+        return ContainsHandler().insertContact(id, request.form)
+
+
 
 
 #MESSAGES AND CHATS
