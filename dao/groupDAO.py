@@ -36,3 +36,10 @@ class GroupDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertGroup(self,groupName, ownerID):
+        cursor = self.conn.cursor()
+        query1 = "INSERT INTO Groups(groupName, isValid, ownerID ) values(%s, B'1', %s) returning groupID"
+        cursor.execute(query, (groupName, ownerID,))
+        result = cursor.fetchone()
+        return result
