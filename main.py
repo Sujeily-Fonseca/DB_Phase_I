@@ -96,10 +96,10 @@ def getOwnerFromGroupId(id):
     return GroupHandler().getOwnerOfGroup(id)
 
 #CHATS
-@app.route('/MessageApp/groups/add')                                        #WORKS REMOTE DB
+@app.route('/MessageApp/groups/add', methods=['POST'])                                        #WORKS REMOTE DB
 def addToGroup():
-    return 'Contact has been added to the group chat!'
-
+    if(request.method == 'POST'):
+        return ParticipantsHandler().insertUserToGroup(request.form)
 
 @app.route('/MessageApp/groups/<int:id>')                                   #WORKS REMOTE DB
 def getGroupByID(id):
