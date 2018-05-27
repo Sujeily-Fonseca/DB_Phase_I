@@ -47,3 +47,4 @@ class GroupDAO:
             result.append(row)
         cursor.execute(query2, (result[0], ownerID,))
         return result
+

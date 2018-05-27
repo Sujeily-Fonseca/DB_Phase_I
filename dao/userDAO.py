@@ -104,11 +104,3 @@ class UserDAO:
         for row in cursor:
             result.append(row)
         return result
-
-    def insertUserToGroup(self):
-        cursor =self.conn.cursor()
-        query = ""
-        cursor.execute(query,())
-        result = cursor.fetchone()
-        self.conn.commit()
-        return result
