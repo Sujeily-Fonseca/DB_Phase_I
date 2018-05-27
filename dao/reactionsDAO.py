@@ -70,33 +70,35 @@ class ReactionsDAO:
         for row in cursor:
             result.append(row)
         print (len(result))
-        if( len(result) != 0 and B'0' == result[0]):
+        if(len(result) != 0 and B'0' == result[0]):
             return False
         return True
 
     def insertReactionToMsg(self, reactionVal, userID, msgID):
         cursor = self.conn.cursor()
-
-        if (int(msgID) in (self.getAllUserLikes(userID)[0]) and int(reactionVal) == 1)\
-                or (int(msgID) in (self.getAllUserDislikes(userID)[0]) and int(reactionVal) == 0):
+        liked = self.getAllUserLikes(userID)
+        disliked = self.getAllUserDislikes(userID)
+        
+        if (len(liked) != 0 and (int(msgID) in (liked[0]) and int(reactionVal) == 1))\
+                or (len(disliked) != 0 and (int(msgID) in (disliked[0]) and int(reactionVal) == 0)):
             print("was liked and pressed like or was disliked and pressed dislike")
             query = "UPDATE reactions SET isValid= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
-        elif int(msgID) in self.getAllUserLikes(userID) and int(reactionVal) == 0:
+        elif len(liked) != 0 and (int(msgID) in liked[0] and int(reactionVal) == 0):
             print("was liked and pressed dislike")
             query = "UPDATE reactions SET lValue= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
-        elif int(msgID) in self.getAllUserDislikes(userID) and int(reactionVal) == 1:
+        elif len(disliked) != 0 and (int(msgID) in disliked[0] and int(reactionVal) == 1):
             print("was disliked and pressed like")
             query = "UPDATE reactions SET lValue= B'1' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
-        elif not self.validateReaction(msgID, userID):
+        elif (len(liked) != 0 or len(disliked) != 0) and not self.validateReaction(msgID, userID):
             print("pressed like on a message that had been liked before,etc")
             query = "UPDATE reactions SET lValue = %s, isValid = B'1' where userID = %s and msgID = %s;"
             cursor.execute(query,(reactionVal, userID, msgID,))
