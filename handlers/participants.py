@@ -48,10 +48,10 @@ class ParticipantsHandler:
             mapped_results.append(self.groupsToDict(r))
         return jsonify(Groups=mapped_results)
 
-    def build_participant_attributes(self, userId, groupId):
+    def build_participant_attributes(self, userId):
         result = {}
         result['userId'] = userId
-        result['groupId'] = groupId
+        #result['groupId'] = row[1]
         return result
 
     def insertUserToGroup(self, form):
@@ -65,8 +65,11 @@ class ParticipantsHandler:
             if userId and groupId and ownerId:
                 dao = ParticipantsDAO()
                 result_list = dao.insertUserToGroup(userId, groupId, ownerId)
-                result = self.build_participant_attributes(result_list[0],result_list[1])
-                return jsonify(Participant_added=result), 201
+                if len(result_list) != 0:
+                    result = self.build_participant_attributes(result_list)
+                    return jsonify(Participant_added=result), 201
+                else:
+                    return jsonify(Error="User could not be added"), 400
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 

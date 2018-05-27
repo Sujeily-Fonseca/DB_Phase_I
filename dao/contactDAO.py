@@ -13,3 +13,16 @@ class ContactDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def isContact(self, contactId, contactOwner):
+        cursor = self.conn.cursor()
+        query = "SELECT * FROM contacts WHERE %s IN (Select contactId FROM contacts WHERE contactOfId=%s); "
+        cursor.execute(query, (contactId,contactOwner))
+        result = []
+        for row in cursor:
+            result.append(row)
+
+        if len(result) == 0:
+            return False
+        else:
+            return True

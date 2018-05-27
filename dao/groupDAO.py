@@ -28,6 +28,13 @@ class GroupDAO:
         result = cursor.fetchone()
         return result
 
+    def getOwnerId(self, gid):  #
+        cursor = self.conn.cursor()
+        query = "SELECT ownerId FROM groups WHERE groupID=%s;"
+        cursor.execute(query, (gid,))
+        result = cursor.fetchone()
+        return result
+
     def searchGroupByName(self,groupName):#
         cursor = self.conn.cursor()
         query = "SELECT groupName, groupID FROM groups WHERE groupName = %s;"
