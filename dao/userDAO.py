@@ -104,3 +104,30 @@ class UserDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, fName, lName, username, email, phone, password):
+        cursor = self.conn.cursor()
+        query = "insert into users(fName, lName, username, email, phone, password) values (%s, %s, %s, %s, %s, %s) " \
+                "returning userId;"
+        cursor.execute(query, (fName, lName, username, email, phone, password,))
+        userId = cursor.fetchone()[0]
+        self.conn.commit()
+        return userId
+
+    def validateInsert(self, username, email, phone):
+        cursor = self.conn.cursor()
+        query ="Select * FROM users WHERE email=%s OR  username=%s OR phone=%s;"
+        cursor.execute(query,(email, username, phone,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        if len(result)>0:
+            return False
+        return True
+
+    def validateLogin(self, username, password):
+        cursor = self.conn.cursor()
+        query = "Select userId FROM users WHERE userName=%s AND password=%s;"
+        cursor.execute(query,(username, password,))
+        result = cursor.fetchone()
+        return result

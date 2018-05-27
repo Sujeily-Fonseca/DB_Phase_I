@@ -110,3 +110,58 @@ class UserHandler:
         for r in result:
             mapped_results.append(self.contactsToDict(r))
         return jsonify(Contacts=mapped_results)
+
+    def build_user_attributes(self, userId, fName, lName, username, email, phone, password):
+        result = {}
+        result['userId'] = userId
+        result['fName'] = fName
+        result['lName'] = lName
+        result['username'] = username
+        result['email'] = email
+        result['phone'] = phone
+        result['password'] = password
+        return result
+    def build_user_login(self, userId):
+        result = {}
+        result['userId'] = userId
+        return result
+
+    def insertUser(self, form):
+        print("form: ", form)
+        if len(form) != 6:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            fName = form['fName']
+            lName = form['lName']
+            username = form['username']
+            email = form['email']
+            phone = form['phone']
+            password = form['password']
+            if fName and lName and username and email and phone and password:
+                dao = UserDAO()
+                if dao.validateInsert(username, email, phone):
+                    userId = dao.insert(fName, lName, username, email, phone, password)
+                    result = self.build_user_attributes(userId, fName, lName, username, email, phone, password)
+                    return jsonify(User=result), 201
+                else:
+                    return jsonify(Error="Username, email or phone already exists"), 400
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def login(self, form):
+        print("form: ", form)
+        if len(form)!= 2:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            username = form['username']
+            password = form['password']
+            if username and password:
+                dao = UserDAO()
+                userId = dao.validateLogin(username, password)
+                if len(userId) == 1:
+                    result = self.build_user_login(userId)
+                    return jsonify(User_Logged_In=result),201
+                else:
+                    return jsonify(Error = "Username or password do not exist"),400
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400

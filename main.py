@@ -21,15 +21,17 @@ def messageApp():
     return "Welcome to DB Messaging App!"
 
 
-@app.route('/MessageApp/Auth/login')                                        #WORKS
+@app.route('/MessageApp/Auth/login', methods=['POST'])                                        #WORKS
 def login():
-    #store user ID
-    return "You are now logged in."
+    if request.method == 'POST':
+        return UserHandler().login(request.form)
 
 
-@app.route('/MessageApp/Auth/register')                                     #WORKS
+@app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
 def register():
-    return "You are now registered as name and last name"
+    if request.method == 'POST':
+        return UserHandler().insertUser(request.form)
+    #return "You are now registered as name and last name"
 ###################################################################
 
 
