@@ -1,5 +1,6 @@
 #contact table: isContactID, contactOfID, contactID
 import psycopg2
+from dao.userDAO import UserDAO
 class ContactDAO:
     def __init__(self):
         self.conn = psycopg2.connect(database='postgres', user='liss',
@@ -26,3 +27,17 @@ class ContactDAO:
             return False
         else:
             return True
+
+    def insertContact(self, userId, phone ):
+        dao = UserDAO()
+        cursor = self.conn.cursor()
+        contactTobeAdded=dao.getUserIdByPhone(phone)
+        result = []
+        if len(contactTobeAdded) != 0:
+            if int(contactTobeAdded) not in (self.getAllContactsFor(userId)) and int(contactTobeAdded) in (dao.getAllUsers()):
+                query = "INSERT INTO contacts(contactOfId, contactId) values(%s,%s) returning contactId;"
+                cursor.execute(query,(userId,contactTobeAdded))
+                for row in cursor:
+                    result.append(row)
+
+        return result
