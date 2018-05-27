@@ -36,7 +36,7 @@ class HashtagDAO:
     def getUsersForHashtag(self, hashtagID):
         cursor = self.conn.cursor()
         query = "SELECT hashString, userName, fName, lName FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN" \
-                "messages NATURAL INNER JOIN users WHERE hashtagID=%s;"
+                " messages NATURAL INNER JOIN users WHERE hashtagID=%s;"
         cursor.execute(query, (hashtagID,))
         result = []
         for r in cursor:

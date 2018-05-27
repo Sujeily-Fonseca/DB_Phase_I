@@ -56,7 +56,24 @@ class GroupHandler:
             result_list.append(result)
         return jsonify(Groups=result_list)
 
-    def insertGroup(self, groupName, ownerID):
-        dao = GroupDAO()
-        result = dao.insertGroup(groupName, ownerID)
-        
+    def build_group_attributes(self, groupId, ownerId):
+        result = {}
+        result['groupId'] = groupId
+        result['ownerId'] = ownerId
+        return result
+
+    def insertGroup(self, form):
+        print("form: ", form)
+        if len(form) != 2:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            groupName = form['groupName']
+            ownerId = form['ownerId']
+            if groupName and ownerId:
+                dao = GroupDAO()
+                result_list = dao.insertGroup(groupName, ownerId)
+                result = self.build_group_attributes(result_list[0],result_list[1])
+                return jsonify(Group=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+

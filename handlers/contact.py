@@ -15,6 +15,7 @@ class ContactHandler:
         result = {}
         result['fName'] = row[0]
         result['lName'] = row[1]
+        result['phone'] = row[3]
         return result
 
     def getAllContacts(self):

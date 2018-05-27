@@ -21,15 +21,17 @@ def messageApp():
     return "Welcome to DB Messaging App!"
 
 
-@app.route('/MessageApp/Auth/login')                                        #WORKS
+@app.route('/MessageApp/Auth/login', methods=['POST'])                                        #WORKS
 def login():
-    #store user ID
-    return "You are now logged in."
+    if request.method == 'POST':
+        return UserHandler().login(request.form)
 
 
-@app.route('/MessageApp/Auth/register')                                     #WORKS
+@app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
 def register():
-    return "You are now registered as name and last name"
+    if request.method == 'POST':
+        return UserHandler().insertUser(request.form)
+    #return "You are now registered as name and last name"
 ###################################################################
 
 
@@ -104,13 +106,19 @@ def getGroupByID(id):
     return GroupHandler().getGroupById(id)
 
 
-@app.route('/MessageApp/groups')                                            #WORKS REMOTE DB
+@app.route('/MessageApp/groups', methods=['GET', 'POST', 'UPDATE'])                                            #WORKS REMOTE DB
 def searchGroupByName():
-    if request.args:
-        return GroupHandler().searchGroupByName(request.args)
-    else:
-        handler = GroupHandler()
-        return handler.getAllGroups()
+    if request.method == 'POST':
+        return GroupHandler().insertGroup(request.form)
+    elif request.method == 'GET':
+        if request.args:
+            return GroupHandler().searchGroupByName(request.args)
+        else:
+            handler = GroupHandler()
+            return handler.getAllGroups()
+    #elif request.method == 'UPDATE'
+
+
 
 #HASHTAGS
 @app.route('/MessageApp/hashtags')                                          #WORKS REMOTE DB
@@ -121,7 +129,7 @@ def getAllHashtags():
         return HashtagHandler().getAllHashtags()
 
 
-@app.route('/MessageApp/hashtags/<int:hid>/user')            #WORKS REMOTE DB
+@app.route('/MessageApp/hashtags/<int:hid>/user')                           #WORKS REMOTE DB
 def usersWithHashtag(hid):
     return HashtagHandler().getUsersForHashtag(hid)
 
