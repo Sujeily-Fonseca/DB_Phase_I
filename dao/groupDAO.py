@@ -50,3 +50,4 @@ class GroupDAO:
             result.append(row)
         self.conn.commit()
         return result
+

@@ -1,5 +1,6 @@
 #participants table: participantID, groupID, userID
-
+from dao.groupDAO import GroupDAO
+from dao.contactDAO import ContactDAO
 import psycopg2
 
 class ParticipantsDAO:
@@ -35,3 +36,14 @@ class ParticipantsDAO:
             result.append(row)
         return result
 
+    def insertUserToGroup(self, userID, groupID, ownerID):
+        gdao = GroupDAO()
+        cdao = ContactDAO()
+        result = []
+        if gdao.getOwnerOfGroup(groupID) == ownerID and userID in cdao.getAllContactsFor(ownerID):
+            cursor =self.conn.cursor()
+            query = "INSERT INTO Participants(groupid,userid) values(%s,%s) returning userid, groupid"
+            cursor.execute(query,(groupID,userID,))
+            result.append(cursor.fetchone())
+            self.conn.commit()
+        return result
