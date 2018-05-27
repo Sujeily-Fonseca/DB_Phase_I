@@ -40,8 +40,10 @@ class ParticipantsDAO:
         gdao = GroupDAO()
         cdao = ContactDAO()
         result = []
-        if gdao.getOwnerOfGroup(groupID) == ownerID and userID in cdao.getAllContactsFor(ownerID):
-            cursor =self.conn.cursor()
+        f = cdao.getAllContactsFor(ownerID)
+        print (f)
+        if gdao.getOwnerOfGroup(groupID) == ownerID and userID in f:
+            cursor = self.conn.cursor()
             query = "INSERT INTO Participants(groupid,userid) values(%s,%s) returning userid, groupid"
             cursor.execute(query,(groupID,userID,))
             result.append(cursor.fetchone())
