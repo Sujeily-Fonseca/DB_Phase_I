@@ -68,11 +68,11 @@ class GroupHandler:
             return jsonify(Error="Malformed post request"), 400
         else:
             groupName = form['groupName']
-            ownerID = form['ownerID']
-            if groupName and ownerID:
+            ownerId = form['ownerId']
+            if groupName and ownerId:
                 dao = GroupDAO()
-                dao.insertGroup(groupName, ownerID)
-                result = self.build_group_attributes()
+                result_list = dao.insertGroup(groupName, ownerId)
+                result = self.build_group_attributes(result_list[0],result_list[1])
                 return jsonify(Group=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400

@@ -39,11 +39,14 @@ class GroupDAO:
 
     def insertGroup(self,groupName, ownerID):
         cursor = self.conn.cursor()
-        query1 = "INSERT INTO Groups(groupName, isValid, ownerID ) values(%s, B'1', %s) returning groupid"
-        query2 = "INSERT INTO Participants (groupid, userid) values (%s,%s) returning groupid"
+        query1 = "INSERT INTO Groups(groupName, isValid, ownerId ) values(%s, B'1', %s) returning groupId;"
+        query2 = "INSERT INTO Participants(groupId, userId) values (%s,%s) returning userId;"
         cursor.execute(query1, (groupName, ownerID,))
         result = []
         for row in cursor:
             result.append(row)
         cursor.execute(query2, (result[0], ownerID,))
+        for row in cursor:
+            result.append(row)
+        self.conn.commit()
         return result
