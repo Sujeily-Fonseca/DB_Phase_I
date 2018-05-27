@@ -28,8 +28,18 @@ class ContainsDAO:
 
     def getMsgsWith(self, hashtagID):
         cursor = self.conn.cursor()
-        query = "SELECT message FROM messages NATURAL INNER JOIN contains WHERE hashtagID=%s;"
+        query = "SELECT message,msgId FROM messages NATURAL INNER JOIN contains WHERE hashtagID=%s;"
         cursor.execute(query, (hashtagID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getMsgWithInGroup(self, hashtagID, groupID):
+        cursor = self.conn.cursor()
+        query = "SELECT message, msgId FROM messages NATURAL INNER JOIN contains NATURAL INNER JOIN groups WHERE hashtagID=%s " \
+                "AND groupID=%s; "
+        cursor.execute(query, (hashtagID, groupID,))
         result = []
         for row in cursor:
             result.append(row)

@@ -20,6 +20,7 @@ class ContainsHandler:
     def messagesToDict(self, row):
         result = {}
         result['message'] = row[0]
+        result['msgId'] = row[1]
         return result
 
     def getHashIn(self, msgID):
@@ -37,3 +38,14 @@ class ContainsHandler:
         for r in results:
             mapped_results.append(self.messagesToDict(r))
         return jsonify(Hashtags=mapped_results)
+
+    def getMsgsWithInGroup(self, hashtagID, groupID):
+        dao = ContainsDAO()
+        results = dao.getMsgWithInGroup(hashtagID, groupID)
+        mapped_results = []
+        for r in results:
+            mapped_results.append(self.messagesToDict(r))
+        if len(mapped_results) > 0:
+            return jsonify(Messages=mapped_results)
+        else:
+            return jsonify(Error="No messages with hashtags found"), 401
