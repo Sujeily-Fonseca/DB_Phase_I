@@ -36,6 +36,12 @@ class ReactionsHandler:
         result['dislikes'] = row[0]
         return result
 
+    def reactionsToDict(self,row):
+        result = {}
+        result['likes'] = row[0]
+        result['dislikes'] = row[1]
+        return result
+
     def getAllUserLikes(self, userID):
         dao = ReactionsDAO()
         result = dao.getAllUserLikes(userID)
@@ -79,3 +85,33 @@ class ReactionsHandler:
         result = dao.getNumberOfDislikes(msgID)
         mapped_result = self.numberOfDislikesToDict(result)
         return jsonify(NumberOfDislikes=mapped_result)
+
+    def getAllReactionsFor(self, msgID):
+        dao = ReactionsDAO()
+        result = []
+        result.append(dao.getNumberOfLikes(msgID))
+        result.append(dao.getNumberOfDislikes(msgID))
+        mapped = self.reactionsToDict(result)
+        return jsonify(Reactions=mapped)
+
+    def build_reactions_attributes(self, likes, dislikes ):
+        result = {}
+        result['Number of Likes'] = likes
+        result['Number of Dislikes'] = dislikes
+        return result
+
+    def insertReactionToMsg(self, form):
+        print("form: ", form)
+        if len(form) != 3:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            lValue = form['lValue']
+            userId = form['userId']
+            msgId = form['msgId']
+            if userId and lValue and msgId:
+                dao = ReactionsDAO()
+                result_list = dao.insertReactionToMsg(lValue, userId, msgId)
+                result = self.build_reactions_attributes(result_list[0], result_list[1])
+                return jsonify(Reactions_added=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400

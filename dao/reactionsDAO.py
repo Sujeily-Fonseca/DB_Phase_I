@@ -79,12 +79,12 @@ class ReactionsDAO:
         #was liked and pressed like or was disliked and pressed dislike
         if int(msgID) in self.getAllUserLikes(userID) and int(reactionVal) == 1\
                 or int(msgID) in self.getAllUserDislikes(userID) and int(reactionVal) == 0:
-            query = "UPDATE reactions SET isValid= B'0' where UserID = %s and msgID = %s returning isValid;"
+            query = "UPDATE reactions SET isValid= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #was liked and pressed dislike
         elif int(msgID) in self.getAllUserLikes(userID) and int(reactionVal) == 0:
-            query = "UPDATE reactions SET lValue= B'0' where UserID = %s and msgID = %s returning ;"
+            query = "UPDATE reactions SET lValue= B'0' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #was disliked and pressed like
@@ -104,4 +104,5 @@ class ReactionsDAO:
         result = []
         result.append(self.getNumberOfLikes(msgID))
         result.append(self.getNumberOfDislikes(msgID))
+        self.conn.commit()
         return result

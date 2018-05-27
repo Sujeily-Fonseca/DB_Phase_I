@@ -151,7 +151,6 @@ def getAllParticipants():
 def likesFromUser(id):
     return ReactionsHandler().getAllUserLikes(id)
 
-
 @app.route('/MessageApp/dislikes/<int:id>')                     #WORKS REMOTE DB
 def dislikesFromUser(id):
     return ReactionsHandler().getAllUserDislikes(id)
@@ -168,11 +167,20 @@ def numDislikesFromUser(id):
 def allMessagesLikes(mid):
     return ReactionsHandler().getAllMessageLikes(mid)
 
-
 @app.route('/MessageApp/messagedislikes/<int:mid>')            #WORKS REMOTE DB
 def allMessagesDislikes(mid):
     return ReactionsHandler().getAllMessageDislikes(mid)
 
+@app.route('MessageApp/reactions', methods=['GET', 'POST'])
+def allReactions():
+    if request.method == 'POST':
+        return ReactionsHandler().insertReactionToMsg(request.form)
+    elif request.method == 'GET':
+        if request.args:
+            return ReactionsHandler().getAllReactionsFor(request.args)
+        #else:
+            #return ReactionsHandler.getAllReactions()
+    #elif request.method == 'UPDATE'
 
 #CONTAINS
 @app.route('/MessageApp/hashtags/message/<int:mid>')            #WORKS REMOTE DB
