@@ -18,9 +18,30 @@ class ReactionsDAO:
             result.append(row)
         return result
 
+
+    def getAllUserLikesIllegal(self, userID):
+        cursor = self.conn.cursor()
+        query = "SELECT msgID FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+                "WHERE lvalue='1' AND users.userID=%s"
+        cursor.execute(query, (userID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllUserDislikesIllegal(self, userID):
+        cursor = self.conn.cursor()
+        query = "SELECT msgID FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
+                "WHERE lvalue='1' AND users.userID=%s"
+        cursor.execute(query, (userID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getAllMessageLikes(self, msgID):
         cursor = self.conn.cursor()
-        query = "SELECT fname, lname FROM users NATURAL INNER JOIN reactions WHERE lvalue='1' AND msgID=%s;"
+        query = "SELECT fname, lname FROM users NATURAL INNER JOIN reactions WHERE lvalue='1' AND isValid='1' AND msgID=%s;"
         cursor.execute(query, (msgID,))
         result = []
         for row in cursor:
@@ -39,7 +60,7 @@ class ReactionsDAO:
 
     def getAllMessageDislikes(self, msgID):
         cursor = self.conn.cursor()
-        query = "SELECT fname, lname FROM users NATURAL INNER JOIN reactions WHERE lvalue='0' AND msgID=%s;"
+        query = "SELECT fname, lname FROM users NATURAL INNER JOIN reactions WHERE lvalue='0' AND isValid='1' AND msgID=%s;"
         cursor.execute(query, (msgID,))
         result = []
         for row in cursor:
@@ -69,8 +90,7 @@ class ReactionsDAO:
         result = []
         for row in cursor:
             result.append(row)
-        print (len(result))
-        if(len(result) != 0 and B'0' == result[0]):
+        if(len(result) != 0 and '0' in result[0]):
             return False
         return True
 
@@ -78,6 +98,8 @@ class ReactionsDAO:
         cursor = self.conn.cursor()
         liked = self.getAllUserLikes(userID)
         disliked = self.getAllUserDislikes(userID)
+        likedIllegal = self.getAllUserLikesIllegal(userID)
+        dislikedIllegal = self.getAllUserDislikesIllegal(userID)
         
         if (len(liked) != 0 and (int(msgID) in (liked[0]) and int(reactionVal) == 1))\
                 or (len(disliked) != 0 and (int(msgID) in (disliked[0]) and int(reactionVal) == 0)):
@@ -98,7 +120,7 @@ class ReactionsDAO:
             cursor.execute(query, (userID, msgID,))
 
         #
-        elif (len(liked) != 0 or len(disliked) != 0) and not self.validateReaction(msgID, userID):
+        elif ((len(likedIllegal) != 0 or len(dislikedIllegal) != 0)) and not self.validateReaction(msgID, userID):
             print("pressed like on a message that had been liked before,etc")
             query = "UPDATE reactions SET lValue = %s, isValid = B'1' where userID = %s and msgID = %s;"
             cursor.execute(query,(reactionVal, userID, msgID,))
