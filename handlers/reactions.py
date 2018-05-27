@@ -28,14 +28,12 @@ class ReactionsHandler:
 
     def numberOfLikesToDict(self,row):
         result = {}
-        result['message'] = row[0]
-        result['likes'] = row[1]
+        result['likes'] = row[0]
         return result
 
     def numberOfDislikesToDict(self,row):
         result = {}
-        result['message'] = row[0]
-        result['dislikes'] = row[1]
+        result['dislikes'] = row[0]
         return result
 
     def getAllUserLikes(self, userID):
