@@ -39,7 +39,7 @@ class ContactHandler:
         if len(form)!=1:
             return jsonify(Error="Malformed post request"), 400
         else:
-            phone = form['form']
+            phone = form['phone']
             if userId and phone:
                 dao = ContactDAO()
                 result_list = dao.insertContact(userId, phone)

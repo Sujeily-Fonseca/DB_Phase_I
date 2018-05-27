@@ -15,6 +15,15 @@ class ContactDAO:
             result.append(row)
         return result
 
+    def getAllContactsForId(self, userID):
+        cursor = self.conn.cursor()
+        query = "SELECT userId FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
+        cursor.execute(query, (userID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def isContact(self, contactId, contactOwner):
         cursor = self.conn.cursor()
         query = "SELECT * FROM contacts WHERE %s IN (Select contactId FROM contacts WHERE contactOfId=%s); "
@@ -34,10 +43,11 @@ class ContactDAO:
         contactTobeAdded=dao.getUserIdByPhone(phone)
         result = []
         if len(contactTobeAdded) != 0:
-            if int(contactTobeAdded) not in (self.getAllContactsFor(userId)) and int(contactTobeAdded) in (dao.getAllUsers()):
+            if contactTobeAdded[0] not in (self.getAllContactsForId(userId)) and contactTobeAdded[0] in (dao.getAllUsersId()):
                 query = "INSERT INTO contacts(contactOfId, contactId) values(%s,%s) returning contactId;"
-                cursor.execute(query,(userId,contactTobeAdded))
+                cursor.execute(query,(userId,contactTobeAdded[0]))
                 for row in cursor:
                     result.append(row)
+                self.conn.commit()
 
         return result

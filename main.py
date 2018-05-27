@@ -6,7 +6,7 @@ from handlers.reactions import ReactionsHandler
 from handlers.participants import ParticipantsHandler
 from handlers.hashtag import HashtagHandler
 from handlers.contains import ContainsHandler
-
+from handlers.contact import ContactHandler
 app = Flask(__name__)
 
 
@@ -70,7 +70,7 @@ def getAllContactsFor(id):
     if request.method == 'GET':
         return UserHandler().getUserContacts(id)
     elif request.method == 'POST':
-        return ContainsHandler().insertContact(id, request.form)
+        return ContactHandler().insertContact(id, request.form)
 
 
 
