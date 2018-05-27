@@ -55,3 +55,8 @@ class GroupHandler:
             result = self.groupToDict(row)
             result_list.append(result)
         return jsonify(Groups=result_list)
+
+    def insertGroup(self, groupName, ownerID):
+        dao = GroupDAO()
+        result = dao.insertGroup(groupName, ownerID)
+        

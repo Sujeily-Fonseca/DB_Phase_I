@@ -78,6 +78,6 @@ class ReactionsHandler:
 
     def getNumberOfDislikes(self, msgID):
         dao = ReactionsDAO()
-        result = dao.getNumberOfLikes(msgID)
+        result = dao.getNumberOfDislikes(msgID)
         mapped_result = self.numberOfDislikesToDict(result)
         return jsonify(NumberOfDislikes=mapped_result)
