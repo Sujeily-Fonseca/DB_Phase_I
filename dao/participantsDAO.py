@@ -18,6 +18,15 @@ class ParticipantsDAO:
             result.append(row)
         return result
 
+    def getAllUsersIdOnGroup(self, groupID):
+        cursor = self.conn.cursor()
+        query = "SELECT userID FROM participants WHERE groupID=%s;"
+        cursor.execute(query, (groupID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getAllUsersOnGroup(self, groupID):
         cursor = self.conn.cursor()
         query = "SELECT userID, fname, lname FROM users NATURAL INNER JOIN participants WHERE groupID=%s;"
@@ -40,9 +49,10 @@ class ParticipantsDAO:
         gdao = GroupDAO()
         cdao = ContactDAO()
         result = []
-        if gdao.getOwnerOfGroup(groupID) == ownerID and userID in cdao.getAllContactsFor(ownerID):
+        if int(ownerID) in (gdao.getOwnerId(groupID)) and cdao.isContact(userID, ownerID) and \
+                int(userID) in (self.getAllUsersIdOnGroup(groupID)):
             cursor =self.conn.cursor()
-            query = "INSERT INTO Participants(groupid,userid) values(%s,%s) returning userid, groupid"
+            query = "INSERT INTO Participants(groupid,userid) values(%s,%s) returning userid;"
             cursor.execute(query,(groupID,userID,))
             result.append(cursor.fetchone())
             self.conn.commit()
