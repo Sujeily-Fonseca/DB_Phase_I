@@ -47,3 +47,27 @@ class ParticipantsHandler:
         for r in result:
             mapped_results.append(self.groupsToDict(r))
         return jsonify(Groups=mapped_results)
+
+    def build_participant_attributes(self, userId, groupId):
+        result = {}
+        result['userId'] = userId
+        result['groupId'] = groupId
+        return result
+
+    def insertUserToGroup(self, form):
+        print("form: ", form)
+        if len(form) != 3:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            userId = form['userId']
+            groupId = form['groupId']
+            ownerId = form['ownerId']
+            if userId and groupId and ownerId:
+                dao = ParticipantsDAO()
+                result_list = dao.insertUserToGroup(userId, groupId, ownerId)
+                result = self.build_participant_attributes(result_list[0],result_list[1])
+                return jsonify(Participant_added=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+

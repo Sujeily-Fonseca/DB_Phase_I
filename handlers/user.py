@@ -165,3 +165,4 @@ class UserHandler:
                     return jsonify(Error = "Username or password do not exist"),400
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+

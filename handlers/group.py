@@ -76,3 +76,4 @@ class GroupHandler:
                 return jsonify(Group=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
