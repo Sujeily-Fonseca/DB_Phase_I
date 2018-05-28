@@ -104,25 +104,25 @@ class ReactionsDAO:
         if (len(liked) != 0 and (int(msgID) in (liked[0]) and int(reactionVal) == 1))\
                 or (len(disliked) != 0 and (int(msgID) in (disliked[0]) and int(reactionVal) == 0)):
             print("was liked and pressed like or was disliked and pressed dislike")
-            query = "UPDATE reactions SET isValid= B'0', dateStamp = current_date where UserID = %s and msgID = %s;"
+            query = "UPDATE reactions SET isValid= B'0', dateStamp = current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
         elif len(liked) != 0 and (int(msgID) in liked[0] and int(reactionVal) == 0):
             print("was liked and pressed dislike")
-            query = "UPDATE reactions SET lValue= B'0', dateStamp = current_date where UserID = %s and msgID = %s;"
+            query = "UPDATE reactions SET lValue= B'0', dateStamp =  current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
         elif len(disliked) != 0 and (int(msgID) in disliked[0] and int(reactionVal) == 1):
             print("was disliked and pressed like")
-            query = "UPDATE reactions SET lValue= B'1', dateStamp = current_date where UserID = %s and msgID = %s;"
+            query = "UPDATE reactions SET lValue= B'1', dateStamp = current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
         elif ((len(likedIllegal) != 0 or len(dislikedIllegal) != 0)) and not self.validateReaction(msgID, userID):
             print("pressed like on a message that had been liked before,etc")
-            query = "UPDATE reactions SET lValue = %s, isValid = B'1', dateStamp = current_date where userID = %s and msgID = %s;"
+            query = "UPDATE reactions SET lValue = %s, isValid = B'1', dateStamp = current_date AT TIME ZONE 'AST' where userID = %s and msgID = %s;"
             cursor.execute(query,(reactionVal, userID, msgID,))
 
         #
