@@ -17,5 +17,10 @@ def getTrending():
     if request.method == 'GET':
         return DashboardHandler().getTrendingHashtags()
 
+@app.route('/Dashboard/topUsers', methods=['GET'])
+def getTopUsers():
+    if request.method == 'GET':
+        return DashboardHandler().getTopUsers()
+
 if __name__ == '__main__':
     app.run()
