@@ -40,12 +40,12 @@ class DashboardDAO:
 
     def getTopUsers(self):
         cursor = self.conn.cursor()
-        query = "SELECT userID, userName, num FROM (SELECT userID, num FROM((SELECT userID, num FROM(" \
-                "SELECT userID, count(*) as num FROM reactions WHERE dateStamp = current_date AT TIME ZONE ‘AST’ " \
-                "GROUP BY userID ORDER BY num) as X LIMIT 10) as A UNION ALL (SELECT userID, num FROM(" \
-                "SELECT userID, count(*) as num FROM messages WHERE date(postTime ) = current_date AT TIME ZONE ‘AST’ " \
-                "GROUP BY userID ORDER BY num) as Y LIMIT 10) as B GROUP BY userID ORDER BY num) as C  " \
-                "NATURAL INNER JOIN users) as W ORDER BY num LIMIT 10"
+        query = "SELECT userID, num, userName FROM (SELECT userID, num FROM(((SELECT userID, num FROM(" \
+                "SELECT userID, count(*) as num FROM reactions WHERE dateStamp = date(current_date AT TIME ZONE 'AST')" \
+                "GROUP BY userID ORDER BY num) as X LIMIT 10) UNION ALL (SELECT userID, num FROM(" \
+                "SELECT userID, count(*) as num FROM messages WHERE date(postTime ) = date(current_date AT TIME ZONE 'AST')" \
+                "GROUP BY userID ORDER BY num) as Y LIMIT 10)) ORDER BY num) as C  " \
+                ") as W NATURAL INNER JOIN users NATURAL INNER JOIN messages GROUP BY userID, userName, num ORDER BY num LIMIT 10"
         cursor.execute(query)
         result = []
         for row in cursor:
