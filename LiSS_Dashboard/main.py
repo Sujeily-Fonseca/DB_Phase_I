@@ -17,5 +17,15 @@ def getTrending():
     if request.method == 'GET':
         return DashboardHandler().getTrendingHashtags()
 
+@app.route('/Dashboard/messagesStatistics', methods=['GET'])
+def getMessagesStatistics():
+    if request.method == 'GET':
+        return DashboardHandler().getMessageStatistics()
+
+@app.route('/Dashboard/repliesStatistics', methods=['GET'])
+def getRepliesStatistics():
+    if request.method == 'GET':
+        return DashboardHandler().getReplyStatistics()
+
 if __name__ == '__main__':
     app.run()
