@@ -18,7 +18,7 @@ class MessageDAO:
 
     def searchMessagesByGroupId(self, id):#
         cursor = self.conn.cursor()
-        query = "SELECT message, fName, lName FROM users NATURAL INNER JOIN messages WHERE groupID = %s;"
+        query = "SELECT msgID, message, userID, fName, lName FROM users NATURAL INNER JOIN messages WHERE groupID = %s;"
         cursor.execute(query,(id,))
         result = []
         for row in cursor:
@@ -47,7 +47,7 @@ class MessageDAO:
 
     def getRepliesForMessage(self, msgID):#
         cursor = self.conn.cursor()
-        query = "SELECT message, fName, lName FROM messages AS M, repliesTo AS R, users AS U WHERE" \
+        query = "SELECT M.msgID, message, U.userID, fName, lName FROM messages AS M, repliesTo AS R, users AS U WHERE" \
                 " M.msgID=R.replyID AND U.userID=M.userID AND R.msgID=%s;"
         cursor.execute(query,(msgID,))
         result = []
@@ -58,7 +58,7 @@ class MessageDAO:
     #verifica a cual mensaje msgID esta respondiendo (si alguno)
     def getMessageThatReplied(self,msgID):#
         cursor = self.conn.cursor()
-        query = "SELECT message, fName, lName, groupName, postTime FROM messages as M NATURAL INNER JOIN" \
+        query = "SELECT msgID, message, userID, fName, lName, groupName, postTime FROM messages as M NATURAL INNER JOIN" \
                 " users as U NATURAL INNER JOIN groups NATURAL INNER JOIN repliesTo WHERE replyID=%s;"
         cursor.execute(query, (msgID,))
         result = []
