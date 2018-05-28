@@ -36,19 +36,19 @@ def register():
 
 
 #REPLIES
-@app.route('/MessageApp/replies/<int:id>')                                  #WORKS REMOTE DB
-def repliesOfMessage(id):
-    return MessageHandler().getRepliesForMessage(id)
+@app.route('/MessageApp/replies/<int:mid>')                                  #WORKS REMOTE DB
+def repliesOfMessage(mid):
+    return MessageHandler().getRepliesForMessage(mid)
 
 
-@app.route('/MessageApp/messages/<int:id>')                                 #WORKS REMOTE DB
-def getMessageBymsgId(id):
-    return MessageHandler().getMessageByMsgId(id)
+@app.route('/MessageApp/messages/<int:mid>')                                 #WORKS REMOTE DB
+def getMessageBymsgId(mid):
+    return MessageHandler().getMessageByMsgId(mid)
 
 
-@app.route('/MessageApp/messages/replied/<int:id>')                         #WORKS REMOTE DB
-def getMessageThatReplied(id):
-    return MessageHandler().getMessageThatReplied(id)
+@app.route('/MessageApp/messages/replied/<int:mid>')                         #WORKS REMOTE DB
+def getMessageThatReplied(mid):
+    return MessageHandler().getMessageThatReplied(mid)
 
 
 #USERS
@@ -56,6 +56,9 @@ def getMessageThatReplied(id):
 def getUserByID(id):
     return UserHandler().getUserById(id)
 
+@app.route('/MessageApp/users', methods=['GET'])                                    #WORKS REMOTE DB
+def getUserByID():
+    return UserHandler().getUserById(request.headers)
 
 @app.route('/MessageApp/users')                                             #WORKS REMOTE DB
 def getAllUsers():

@@ -14,6 +14,15 @@ class GroupDAO:
             result.append(row)
         return result
 
+    def getAllGroupsId(self):#
+        cursor = self.conn.cursor()
+        query = "SELECT groupId FROM groups;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getGroupById(self, id):#
         cursor = self.conn.cursor()
         query = "SELECT groupName FROM groups WHERE groupID = %s;"
