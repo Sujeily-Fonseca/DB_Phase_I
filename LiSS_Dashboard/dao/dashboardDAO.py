@@ -38,14 +38,14 @@ class DashboardDAO:
             result.append(row)
         return result
 
-    def mostActiveUsers(self):
+    def getTopUsers(self):
         cursor = self.conn.cursor()
         query = "SELECT userID, userName, num FROM (SELECT userID, num FROM((SELECT userID, num FROM(" \
                 "SELECT userID, count(*) as num FROM reactions WHERE dateStamp = current_date AT TIME ZONE ‘AST’ " \
-                "GROUP BY userID ORDER BY num) as X LIMIT 10) as A UNION (SELECT userID, num FROM(" \
+                "GROUP BY userID ORDER BY num) as X LIMIT 10) as A UNION ALL (SELECT userID, num FROM(" \
                 "SELECT userID, count(*) as num FROM messages WHERE date(postTime ) = current_date AT TIME ZONE ‘AST’ " \
                 "GROUP BY userID ORDER BY num) as Y LIMIT 10) as B GROUP BY userID ORDER BY num) as C  " \
-                "NATURAL INNER JOIN users) as W LIMIT 10"
+                "NATURAL INNER JOIN users) as W ORDER BY num LIMIT 10"
         cursor.execute(query)
         result = []
         for row in cursor:

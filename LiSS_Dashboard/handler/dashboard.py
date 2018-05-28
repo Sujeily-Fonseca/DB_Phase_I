@@ -40,9 +40,25 @@ class DashboardHandler:
         result = {}
         result['hashString'] = row[0]
         return result
+
     def getTrendingHashtags(self):
         dao = DashboardDAO()
         results = dao.getTrendingHashtags()
+        mapped_results = []
+        for r in results:
+            mapped_results.append(self.trendingToDict(r))
+        return jsonify(Trending=mapped_results)
+
+    def topUsersToDict(self, row):
+        result = {}
+        result['userID'] = row[0]
+        result['userName'] = row[1]
+        result['num'] = row[2]
+        return result
+
+    def getTopUsers(self):
+        dao = DashboardDAO()
+        results = dao.getTopUsers()
         mapped_results = []
         for r in results:
             mapped_results.append(self.trendingToDict(r))
