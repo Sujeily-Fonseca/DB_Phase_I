@@ -86,13 +86,25 @@ class ReactionsHandler:
         mapped_result = self.numberOfDislikesToDict(result)
         return jsonify(NumberOfDislikes=mapped_result)
 
-    def getAllReactionsFor(self, msgID):
+    def getAllReactionsFor(self, args):
+        msgID = args.get('msgId')
         dao = ReactionsDAO()
         result = []
-        result.append(dao.getNumberOfLikes(msgID))
-        result.append(dao.getNumberOfDislikes(msgID))
-        mapped = self.reactionsToDict(result)
-        return jsonify(Reactions=mapped)
+        if len(args) == 1 and msgID:
+            x = dao.getNumberOfLikes(msgID)
+            if not x is None:
+                result.append(x)
+            else:
+                result.append(0)
+            y = dao.getNumberOfDislikes(msgID)
+            if not x is None:
+                result.append(y)
+            else:
+                result.append(0)
+            mapped = self.reactionsToDict(result)
+            return jsonify(Reactions=mapped)
+        else:
+            return jsonify (Error="Malformed query string"), 400
 
     def build_reactions_attributes(self, likes, dislikes ):
         result = {}
