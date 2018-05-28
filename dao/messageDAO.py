@@ -1,6 +1,8 @@
 #message table: msgID, message, postTime, groupID, userID
 import psycopg2
 from dao.participantsDAO import ParticipantsDAO
+from dao.hashtagDAO import HashtagDAO
+from dao.groupDAO import GroupDAO
 class MessageDAO:
     def __init__(self):
         self.conn = psycopg2.connect(database='postgres', user='liss',
@@ -76,17 +78,49 @@ class MessageDAO:
             result.append(row)
         return result;
 
-    def postMessage(self, userId, groupId, message):
+    def checkIsIn(self, element, list):
+        for tuple in list:
+            if int(element) in tuple:
+                return True
+        return False
+
+    def insertReply(self, msgId, replyId):
+        cursor = self.conn.cursor()
+        query = "INSERT INTO repliesTo(msgId, replyId) values(%s,%s) returning replyId;"
+        cursor.execute(query,(msgId, replyId))
+        result = cursor.fetchone()
+        self.conn.commit()
+        return result
+
+
+    def postMessage(self, userId, groupId, message, replyValue, repliedId):
         cursor = self.conn.cursor()
         dao = ParticipantsDAO()
+        dao2 = GroupDAO()
         result = []
-        if ( int(userId) in dao.getAllUsersIdOnGroup(groupId)):
+        splittedMessage = message.split("#")[1:]
+        hashtags = []
+        for hashtag in splittedMessage:
+            hashtags.append(hashtag.split(" ")[0])
+        if self.checkIsIn(userId, dao.getAllUsersIdOnGroup(groupId)) and self.checkIsIn(groupId, dao2.getAllGroupsId()):
             query = "INSERT INTO messages(message, userId, groupId, postTime) values(%s,%s,%s,current_timestamp " \
-                " AT TIME ZONE 'AST') returning msgId;"
+                    " AT TIME ZONE 'AST') returning msgId;"
             cursor.execute(query, (message, userId, groupId, ))
+            for row in cursor:
+                result.append(row)
+            if replyValue:
+                self.insertReply(repliedId, result[0])
+            if len(hashtags)!=0:
+                for element in hashtags:
+                    queryHash = "INSERT INTO hashtags(hashString) values(%s) returning hashtagId;"
+                    hash = "#"
+                    hashresult = []
+                    cursor.execute(queryHash, ( hash + str((element)),))
+                    for row in cursor:
+                        hashresult.append(row)
+                    queryContains = "INSERT INTO contains(msgId, hashtagId) values(%s,%s);"
+                    cursor.execute(queryContains, (result[0],hashresult[0],))
 
-        for row in cursor:
-            result.append(row)
         self.conn.commit()
         return result
 
