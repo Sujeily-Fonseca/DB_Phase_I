@@ -1,6 +1,6 @@
 #message table: msgID, message, postTime, groupID, userID
 import psycopg2
-
+from dao.participantsDAO import ParticipantsDAO
 class MessageDAO:
     def __init__(self):
         self.conn = psycopg2.connect(database='postgres', user='liss',
@@ -75,4 +75,18 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result;
+
+    def postMessage(self, userId, groupId, message):
+        cursor = self.conn.cursor()
+        dao = ParticipantsDAO()
+        result = []
+        if ( int(userId) in dao.getAllUsersIdOnGroup(groupId)):
+            query = "INSERT INTO messages(message, userId, groupId, postTime) values(%s,%s,%s,current_timestamp " \
+                " AT TIME ZONE 'AST') returning msgId;"
+            cursor.execute(query, (message, userId, groupId, ))
+
+        for row in cursor:
+            result.append(row)
+        self.conn.commit()
+        return result
 
