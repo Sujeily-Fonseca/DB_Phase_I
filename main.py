@@ -86,9 +86,13 @@ def messagesOfUserFromGroup(uid,gid):
     return MessageHandler().searchMessagesOfUserFromGroup(uid,gid)
 
 
-@app.route('/MessageApp/messages')                                          #WORKS REMOTE DB
+@app.route('/MessageApp/messages', methods=['GET', 'POST'])                                          #WORKS REMOTE DB
 def messagesByChatName():
-    return MessageHandler().getAllMessages()
+    if request.method=='GET':
+        return MessageHandler().getAllMessages()
+    elif request.method=='POST':
+        return MessageHandler().postMessage(request.headers, request.form)
+
 
 
 @app.route('/MessageApp/messages/user/<int:uid>')                           #WORKS REMOTE DB
