@@ -7,7 +7,12 @@ from handlers.participants import ParticipantsHandler
 from handlers.hashtag import HashtagHandler
 from handlers.contains import ContainsHandler
 from handlers.contact import ContactHandler
+from flask_cors import CORS, cross_origin
+
+# Activate
 app = Flask(__name__)
+# Apply CORS to this app
+CORS(app)
 
 
 ###################################################################
