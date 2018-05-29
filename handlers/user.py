@@ -48,7 +48,6 @@ class UserHandler:
     def getUserById(self, form):
         print(form)
         dao = UserDAO()
-        if 
         result = dao.getUserById(id)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
@@ -160,7 +159,9 @@ class UserHandler:
             if username and password:
                 dao = UserDAO()
                 userId = dao.validateLogin(username, password)
-                if len(userId) == 1:
+                if userId is None:
+                    return jsonify(Error= "User has not been autheticated"), 400
+                elif len(userId) == 1:
                     result = self.build_user_login(userId)
                     return jsonify(User_Logged_In=result),201
                 else:

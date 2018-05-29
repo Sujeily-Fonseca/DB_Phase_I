@@ -7,8 +7,12 @@ from handlers.participants import ParticipantsHandler
 from handlers.hashtag import HashtagHandler
 from handlers.contains import ContainsHandler
 from handlers.contact import ContactHandler
-app = Flask(__name__)
+from flask_cors import CORS, cross_origin
 
+# Activate
+app = Flask(__name__)
+# Apply CORS to this app
+CORS(app)
 
 ###################################################################
 @app.route('/')
@@ -24,7 +28,7 @@ def messageApp():
 @app.route('/MessageApp/Auth/login', methods=['POST'])                                        #WORKS
 def login():
     if request.method == 'POST':
-        return UserHandler().login(request.form)
+        return UserHandler().login(request.get_json())
 
 
 @app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
@@ -52,9 +56,9 @@ def getMessageThatReplied(mid):
 
 
 #USERS
-@app.route('/MessageApp/users/<int:id>')                                    #WORKS REMOTE DB
-def getUserByID(id):
-    return UserHandler().getUserById(id)
+#@app.route('/MessageApp/users/<int:id>')                                    #WORKS REMOTE DB
+#def getUserByID(id):
+#    return UserHandler().getUserById(id)
 
 @app.route('/MessageApp/users', methods=['GET'])                                    #WORKS REMOTE DB
 def getUserByID():
