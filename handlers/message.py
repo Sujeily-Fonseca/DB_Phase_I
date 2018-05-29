@@ -107,3 +107,31 @@ class MessageHandler:
         for r in result:
             mapped_results.append(self.msgToDict(r))
         return jsonify(Message=mapped_results)
+
+    def build_message_attributes(self, msgId):
+        result = {}
+        result['msgId'] = msgId
+        return result
+
+    def postMessage(self, form1, form2):
+        if len(form2) != 3 or not 'Userid' in dict(form1).keys() or not 'Groupid' in dict(form1).keys():
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            userId = form1['userId']
+            groupId = form1['groupId']
+            message = form2['message']
+            replyValue = form2['replyValue']
+            replyId = form2['replyId']
+            if message:
+                dao = MessageDAO()
+                result_list = dao.postMessage(userId, groupId,message, replyValue, replyId)
+                result = self.build_message_attributes(result_list)
+                return jsonify(Message=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+
+
+
+
+

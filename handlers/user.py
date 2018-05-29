@@ -45,8 +45,10 @@ class UserHandler:
 
         return jsonify(Users=mapped_results)
     
-    def getUserById(self, id):
+    def getUserById(self, form):
+        print(form)
         dao = UserDAO()
+        if 
         result = dao.getUserById(id)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
