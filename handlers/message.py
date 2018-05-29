@@ -18,9 +18,11 @@ class MessageHandler:
 
     def nameToDict(self, row):
         result = {}
-        result['message'] = row[0]
-        result['fName'] = row[1]
-        result['lName'] = row[2]
+        result['msgID'] = row[0]
+        result['message'] = row[1]
+        result['userID'] = row[2]
+        result['fName'] = row[3]
+        result['lName'] = row[4]
         return result
 
     def simpleMsgToDict(self, row):
@@ -39,11 +41,13 @@ class MessageHandler:
 
     def msgToDict(self, row):
         result = {}
-        result['message'] = row[0]
-        result['fName'] = row[1]
-        result['lName'] = row[2]
-        result['groupName'] = row[3]
-        result['postTime'] = row[4]
+        result['msgID'] = row[0]
+        result['message'] = row[1]
+        result['userID'] = row[2]
+        result['fName'] = row[3]
+        result['lName'] = row[4]
+        result['groupName'] = row[5]
+        result['postTime'] = row[6]
         return result
 
     def getAllMessages(self):#
@@ -86,14 +90,14 @@ class MessageHandler:
         mapped_results = []
         for r in result:
             mapped_results.append(self.nameToDict(r))
-        return jsonify(Messages_Replied = mapped_results)
+        return jsonify(Messages_Replied=mapped_results)
 
     def getMessageThatReplied(self, msgID):
         dao = MessageDAO()
         result = dao.getMessageThatReplied(msgID)
         mapped_results = []
         for r in result:
-            mapped_results.append(self.nameToDict(r))
+            mapped_results.append(self.msgToDict(r))
         return jsonify(Replies_To=mapped_results)
 
     def getMessageByMsgId(self, msgID):
