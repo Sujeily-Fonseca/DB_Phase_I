@@ -49,6 +49,7 @@ class DashboardHandler:
             mapped_results.append(self.trendingToDict(r))
         return jsonify(Trending=mapped_results)
 
+<<<<<<< HEAD
     def topUsersToDict(self, row):
         result = {}
         result['userID'] = row[0]
@@ -63,3 +64,35 @@ class DashboardHandler:
         for r in results:
             mapped_results.append(self.topUsersToDict(r))
         return jsonify(Trending=mapped_results)
+=======
+    def messageStaticticsToDict(self, row):
+        result = {}
+        result['postDay'] = row[0]
+        result['messages'] = row[1]
+        return result
+
+
+    def getMessageStatistics(self):
+        dao = DashboardDAO()
+        results = dao.getMessageStatistics()
+        mapped_results = []
+        for r in results:
+            mapped_results.append(self.messageStaticticsToDict(r))
+        return jsonify(Message_statistics=mapped_results)
+
+    def replyStaticticsToDict(self, row):
+        result = {}
+        result['postDay'] = row[0]
+        result['replies'] = row[1]
+        return result
+
+
+    def getReplyStatistics(self):
+        dao = DashboardDAO()
+        results = dao.getRepliesStatistics()
+        mapped_results = []
+        for r in results:
+            mapped_results.append(self.replyStaticticsToDict(r))
+        return jsonify(Reply_statistics=mapped_results)
+
+>>>>>>> dashboard
