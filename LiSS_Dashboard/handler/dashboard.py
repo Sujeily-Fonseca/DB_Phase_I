@@ -39,6 +39,7 @@ class DashboardHandler:
     def trendingToDict(self, row):
         result = {}
         result['hashString'] = row[0]
+        result['quantity'] = row[1]
         return result
 
     def getTrendingHashtags(self):
@@ -51,9 +52,9 @@ class DashboardHandler:
 
     def topUsersToDict(self, row):
         result = {}
-        result['userID'] = row[0]
-        result['numberOfActivities'] = row[1]
-        result['userName'] = row[2]
+       # result['userID'] = row[0]
+        result['numberOfActivities'] = row[0]
+        result['userName'] = row[1]
         return result
 
     def getTopUsers(self):
@@ -62,7 +63,7 @@ class DashboardHandler:
         mapped_results = []
         for r in results:
             mapped_results.append(self.topUsersToDict(r))
-        return jsonify(Trending=mapped_results)
+        return jsonify(Top_Users=mapped_results)
 
     def messageStaticticsToDict(self, row):
         result = {}
@@ -93,3 +94,16 @@ class DashboardHandler:
         for r in results:
             mapped_results.append(self.replyStaticticsToDict(r))
         return jsonify(Reply_statistics=mapped_results)
+
+    def like_dislike(self):
+        daoLikes = DashboardDAO()
+        daoDislikes  = DashboardDAO()
+        resultsLikes = daoLikes.getLikeStatistics()
+        resultDislikes = daoDislikes.getdislikeStatistics()
+        mapped_results = []
+        for r in resultsLikes:
+            mapped_results.append(self.likeStaticticsToDict(r))
+        for r in resultDislikes:
+            mapped_results.append(self.dislikeStaticticsToDict(r))
+        return jsonify(Like_Dislike_Statistics=mapped_results)
+

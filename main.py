@@ -34,7 +34,7 @@ def login():
 @app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
 def register():
     if request.method == 'POST':
-        return UserHandler().insertUser(request.form)
+        return UserHandler().insertUser(request.get_json())
     #return "You are now registered as name and last name"
 ###################################################################
 
