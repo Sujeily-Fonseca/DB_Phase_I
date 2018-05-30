@@ -17,7 +17,7 @@ class HashtagDAO:
 
     def searchHashtagByName(self, hashString):
         cursor = self.conn.cursor()
-        query = "SELECT hashString,message, groupName FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN " \
+        query = "SELECT msgID, message, userID, fName, lName groupName FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN " \
                 "messages NATURAL INNER JOIN groups WHERE hashString = %s;"
         cursor.execute(query, (hashString,))
         result = []
