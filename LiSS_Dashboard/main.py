@@ -1,6 +1,11 @@
 from flask import Flask, request
 from LiSS_Dashboard.handler.dashboard import DashboardHandler
+from flask_cors import CORS, cross_origin
+
+# Activate
 app = Flask(__name__)
+# Apply CORS to this app
+CORS(app)
 
 @app.route('/Dashboard/likes', methods=['GET'])
 def dashLikes():
@@ -17,12 +22,11 @@ def getTrending():
     if request.method == 'GET':
         return DashboardHandler().getTrendingHashtags()
 
-<<<<<<< HEAD
 @app.route('/Dashboard/topUsers', methods=['GET'])
 def getTopUsers():
     if request.method == 'GET':
         return DashboardHandler().getTopUsers()
-=======
+
 @app.route('/Dashboard/messagesStatistics', methods=['GET'])
 def getMessagesStatistics():
     if request.method == 'GET':
@@ -32,7 +36,6 @@ def getMessagesStatistics():
 def getRepliesStatistics():
     if request.method == 'GET':
         return DashboardHandler().getReplyStatistics()
->>>>>>> dashboard
 
 if __name__ == '__main__':
     app.run()

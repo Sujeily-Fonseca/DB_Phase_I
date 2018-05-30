@@ -108,8 +108,9 @@ class MessageDAO:
             cursor.execute(query, (message, userId, groupId, ))
             for row in cursor:
                 result.append(row)
-            if replyValue:
-                self.insertReply(repliedId, result[0])
+            print(replyValue)
+            if bool(replyValue):
+                self.insertReply(int(repliedId), result[0])
             if len(hashtags)!=0:
                 for element in hashtags:
                     queryHash = "INSERT INTO hashtags(hashString) values(%s) returning hashtagId;"
