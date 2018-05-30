@@ -209,6 +209,15 @@ def HashIn(mid):
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
 
+@app.route('/MessageApp/message/hashtag/<int:gid>', methods=['GET'])             #WORKS REMOTE DB
+def MsgsWithhashString(gid):
+    print("here")
+    if request.method == 'GET':
+        print("here2")
+        if request.args:
+            print("here 3")
+            return ContainsHandler().getMsgsWithHashString(gid,request.args)
+
 @app.route('/MessageApp/message/hashtag/<int:hid>/<int:gid>')             #WORKS REMOTE DB
 def MsgsWithInGroup(hid,gid):
     return ContainsHandler().getMsgsWithInGroup(hid, gid)

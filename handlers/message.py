@@ -117,12 +117,12 @@ class MessageHandler:
         if len(form2) != 3 :
             return jsonify(Error="Malformed post request"), 400
         else:
-            message = form2['message']
+            newText = form2['newText']
             replyValue = form2['replyValue']
             replyId = form2['replyId']
-            if message:
+            if newText:
                 dao = MessageDAO()
-                result_list = dao.postMessage(userId, groupId,message, replyValue, replyId)
+                result_list = dao.postMessage(userId, groupId,newText, replyValue, replyId)
                 result = self.build_message_attributes(result_list)
                 return jsonify(Message=result), 201
             else:

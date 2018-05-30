@@ -110,7 +110,7 @@ class MessageDAO:
                 result.append(row)
             print(replyValue)
             if bool(replyValue):
-                self.insertReply(repliedId, result[0])
+                self.insertReply(int(repliedId), result[0])
             if len(hashtags)!=0:
                 for element in hashtags:
                     queryHash = "INSERT INTO hashtags(hashString) values(%s) returning hashtagId;"
