@@ -85,17 +85,21 @@ def messagesFromGroupId(gid):
     return MessageHandler().searchMessagesByGroupId(gid)
 
 
-@app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>')          #WORKS REMOTE DB
+@app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>', methods=['GET', 'POST'])          #WORKS REMOTE DB
 def messagesOfUserFromGroup(uid,gid):
-    return MessageHandler().searchMessagesOfUserFromGroup(uid, gid)
+    if request.method == 'GET':
+        return MessageHandler().searchMessagesOfUserFromGroup(uid, gid)
+    elif request.method=='POST':
+        return MessageHandler().postMessage(uid,gid, request.get_json())
 
 
-@app.route('/MessageApp/messages', methods=['GET', 'POST'])                                          #WORKS REMOTE DB
+
+
+@app.route('/MessageApp/messages', methods=['GET'])                                          #WORKS REMOTE DB
 def messagesByChatName():
     if request.method=='GET':
         return MessageHandler().getAllMessages()
-    elif request.method=='POST':
-        return MessageHandler().postMessage(request.headers, request.get_json())
+
 
 
 
@@ -201,9 +205,18 @@ def HashIn(mid):
     return ContainsHandler().getHashIn(mid)
 
 
-@app.route('/MessageApp/message/hashtag/<int:hid>')             #WORKS REMOTE DB
+@app.route('/MessageApp/message/hashtags/<int:hid>')             #WORKS REMOTE DB
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
+
+@app.route('/MessageApp/message/hashtag/<int:gid>', methods=['GET'])             #WORKS REMOTE DB
+def MsgsWithhashString(gid):
+    print("here")
+    if request.method == 'GET':
+        print("here2")
+        if request.args:
+            print("here 3")
+            return ContainsHandler().getMsgsWithHashString(gid,request.args)
 
 @app.route('/MessageApp/message/hashtag/<int:hid>/<int:gid>')             #WORKS REMOTE DB
 def MsgsWithInGroup(hid,gid):
