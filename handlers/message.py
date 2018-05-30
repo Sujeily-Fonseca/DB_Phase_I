@@ -113,12 +113,10 @@ class MessageHandler:
         result['msgId'] = msgId
         return result
 
-    def postMessage(self, form1, form2):
-        if len(form2) != 3 or not 'Userid' in dict(form1).keys() or not 'Groupid' in dict(form1).keys():
+    def postMessage(self, userId, groupId, form2):
+        if len(form2) != 3 :
             return jsonify(Error="Malformed post request"), 400
         else:
-            userId = form1['userId']
-            groupId = form1['groupId']
             message = form2['message']
             replyValue = form2['replyValue']
             replyId = form2['replyId']
