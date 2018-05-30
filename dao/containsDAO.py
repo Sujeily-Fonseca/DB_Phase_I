@@ -48,7 +48,7 @@ class ContainsDAO:
     def getMsgsWithHashString(self,gid, hashString):
         cursor = self.conn.cursor()
         query = "SELECT msgId, message, userId, fName, lName FROM hashtags NATURAL INNER JOIN contains NATURAL INNER JOIN " \
-                "messages NATURAL INNER JOIN users WHERE hashString='%s' AND groupId=%s;"
+                "messages NATURAL INNER JOIN users WHERE hashString=%s AND groupId=%s;"
         cursor.execute(query, (hashString, gid,))
         result = []
         for row in cursor:

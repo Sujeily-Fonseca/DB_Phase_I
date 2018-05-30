@@ -205,7 +205,7 @@ def HashIn(mid):
     return ContainsHandler().getHashIn(mid)
 
 
-@app.route('/MessageApp/message/hashtag/<int:hid>')             #WORKS REMOTE DB
+@app.route('/MessageApp/message/hashtags/<int:hid>')             #WORKS REMOTE DB
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
 
