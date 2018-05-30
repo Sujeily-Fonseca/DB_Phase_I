@@ -128,7 +128,7 @@ class ReactionsDAO:
         #
         else:
             print("new reaction")
-            query = "INSERT INTO reactions (isValid, lValue, msgId, userId, dateStamp) values (B'1', %s, %s, %s, current_date);"
+            query = "INSERT INTO reactions (isValid, lValue, msgId, userId, dateStamp) values (B'1', %s, %s, %s, current_date AT TIME ZONE 'AST');"
             cursor.execute(query, (reactionVal, msgID, userID,))
         self.conn.commit()
         result = []
