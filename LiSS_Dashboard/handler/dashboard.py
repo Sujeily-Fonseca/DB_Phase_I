@@ -53,8 +53,8 @@ class DashboardHandler:
     def topUsersToDict(self, row):
         result = {}
        # result['userID'] = row[0]
-        result['numberOfActivities'] = row[1]
-        result['userName'] = row[2]
+        result['userName'] = row[1]
+        result['numberOfActivities'] = row[2]
         return result
 
     def getTopUsers(self):

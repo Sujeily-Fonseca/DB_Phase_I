@@ -10,7 +10,7 @@ class DashboardDAO:
     def getLikeStatistics(self):
         cursor = self.conn.cursor()
         query = "SELECT dateStamp, count(*) as likes FROM reactions WHERE isValid='1' AND lValue='1' AND dateStamp<=(current_date +1)" \
-                " AND dateStamp >=(current_date -4) GROUP BY dateStamp;"
+                " AND dateStamp >=(current_date -4) GROUP BY dateStamp ORDER BY dateStamp;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,7 +20,7 @@ class DashboardDAO:
     def getdislikeStatistics(self):
         cursor = self.conn.cursor()
         query = "SELECT dateStamp, count(*) as dislikes FROM reactions WHERE isValid='1' AND lValue='0' AND dateStamp<=(current_date +1)" \
-                " AND dateStamp >=(current_date -4) GROUP BY dateStamp;"
+                " AND dateStamp >=(current_date -4) GROUP BY dateStamp ORDER BY dateStamp;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -52,11 +52,11 @@ class DashboardDAO:
                  "AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) AS x LIMIT 10), react AS (SELECT userID, num FROM (SELECT userID, count(userId) " \
                  "as num FROM messages WHERE date(postTime) = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as Y LIMIT 10), " \
                  "merged AS (SELECT userID, num FROM ((SELECT * FROM msg) UNION ALL (SELECT * FROM react)) as Z ), totalSum AS (SELECT userID, SUM(num) " \
-                 "as pito FROM merged GROUP BY userID) SELECT userID, totalSum.pito, username FROM users  NATURAL INNER JOIN totalSum ORDER BY totalSum.pito LIMIT 10;"
+                 "as C FROM merged GROUP BY userID) SELECT userID, username, totalSum.C FROM users  NATURAL INNER JOIN totalSum ORDER BY totalSum.C desc LIMIT 10;"
         cursor.execute(query1)
         result = []
         for row in cursor:
-            newRow = (row[0], int(row[1]), row[2])
+            newRow = (row[0], row[1], int(row[2]))
             result.append(newRow)
         return result
 
