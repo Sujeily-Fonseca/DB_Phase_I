@@ -34,8 +34,7 @@ def login():
 @app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
 def register():
     if request.method == 'POST':
-        return UserHandler().insertUser(request.form)
-    #return "You are now registered as name and last name"
+        return UserHandler().insertUser(request.get_json())
 ###################################################################
 
 
@@ -77,9 +76,7 @@ def getAllContactsFor(id):
     if request.method == 'GET':
         return UserHandler().getUserContacts(id)
     elif request.method == 'POST':
-        return ContactHandler().insertContact(id, request.form)
-
-
+        return ContactHandler().insertContact(id, request.get_json())
 
 
 #MESSAGES AND CHATS
@@ -90,7 +87,7 @@ def messagesFromGroupId(gid):
 
 @app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>')          #WORKS REMOTE DB
 def messagesOfUserFromGroup(uid,gid):
-    return MessageHandler().searchMessagesOfUserFromGroup(uid,gid)
+    return MessageHandler().searchMessagesOfUserFromGroup(uid, gid)
 
 
 @app.route('/MessageApp/messages', methods=['GET', 'POST'])                                          #WORKS REMOTE DB
@@ -98,7 +95,7 @@ def messagesByChatName():
     if request.method=='GET':
         return MessageHandler().getAllMessages()
     elif request.method=='POST':
-        return MessageHandler().postMessage(request.headers, request.form)
+        return MessageHandler().postMessage(request.headers, request.get_json())
 
 
 
@@ -125,7 +122,7 @@ def getGroupByID(id):
 @app.route('/MessageApp/groups', methods=['GET', 'POST', 'UPDATE'])                                            #WORKS REMOTE DB
 def searchGroupByName():
     if request.method == 'POST':
-        return GroupHandler().insertGroup(request.form)
+        return GroupHandler().insertGroup(request.get_json())
     elif request.method == 'GET':
         if request.args:
             return GroupHandler().searchGroupByName(request.args)
@@ -190,7 +187,7 @@ def allMessagesDislikes(mid):
 @app.route('/MessageApp/reactions', methods=['GET', 'POST'])
 def allReactions():
     if request.method == 'POST':
-        return ReactionsHandler().insertReactionToMsg(request.form)
+        return ReactionsHandler().insertReactionToMsg(request.get_json())
     elif request.method == 'GET':
         if request.args:
             return ReactionsHandler().getAllReactionsFor(request.args)

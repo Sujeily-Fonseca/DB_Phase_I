@@ -37,29 +37,33 @@ class DashboardDAO:
             result.append(row)
         return result
 
-<<<<<<< HEAD
+
     def getTopUsers(self):
         cursor = self.conn.cursor()
-        query = "SELECT userID, num, userName FROM (SELECT userID, num FROM(((SELECT userID, num FROM(" \
-                "SELECT userID, count(*) as num FROM reactions WHERE dateStamp = date(current_date AT TIME ZONE 'AST')" \
-                "GROUP BY userID ORDER BY num) as X LIMIT 10) UNION ALL (SELECT userID, num FROM(" \
-                "SELECT userID, count(*) as num FROM messages WHERE date(postTime ) = date(current_date AT TIME ZONE 'AST')" \
-                "GROUP BY userID ORDER BY num) as Y LIMIT 10)) ORDER BY num) as C  " \
-                ") as W NATURAL INNER JOIN users NATURAL INNER JOIN messages GROUP BY userID, userName, num ORDER BY num LIMIT 10"
-=======
+        query1 = "WITH react AS (SELECT userID, num FROM (SELECT userID, count(userID) as num FROM reactions " \
+                 "WHERE dateStamp = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as X LIMIT 10)," \
+                 "msg AS (SELECT userID, num FROM (SELECT userID, count(userID) as num FROM messages " \
+                 "WHERE date(postTime) = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as Y LIMIT 10)," \
+                 "merged AS (SELECT userID, num FROM ((SELECT * FROM msg) UNION ALL (SELECT * FROM react)) as Z " \
+                 "), totalSum AS (SELECT userID, (SUM(num)) as pito FROM merged GROUP BY userID) " \
+                 "SELECT userID, totalSum.pito, username FROM users  NATURAL INNER JOIN totalSum " \
+                 "ORDER BY totalSum.pito LIMIT 10;"
+        cursor.execute(query1)
+        result = []
+        for row in cursor:
+            newRow = (row[0], int(row[1]), row[2])
+            result.append(newRow)
+        return result
+
     def getMessageStatistics(self):
         cursor = self.conn.cursor()
         query = "SELECT date(postTime) as dateStamp, count(*) as messages FROM messages WHERE date(postTime)<=(current_date + 1) AND " \
                 "date(postTime)>= (current_date -4)" \
                 " GROUP BY date(postTime);"
->>>>>>> dashboard
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
-<<<<<<< HEAD
-        return result
-=======
         return result
 
     def getRepliesStatistics(self):
@@ -73,4 +77,3 @@ class DashboardDAO:
         for row in cursor:
             result.append(row)
         return result
->>>>>>> dashboard

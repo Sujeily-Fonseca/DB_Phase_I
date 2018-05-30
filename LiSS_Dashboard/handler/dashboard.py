@@ -62,7 +62,7 @@ class DashboardHandler:
         mapped_results = []
         for r in results:
             mapped_results.append(self.topUsersToDict(r))
-        return jsonify(Trending=mapped_results)
+        return jsonify(Top=mapped_results)
 
     def messageStaticticsToDict(self, row):
         result = {}
