@@ -113,12 +113,27 @@ class ReactionsHandler:
                 mapped_dislikes.append(self.messagesReactionsToDict(dislikes))
 
             result['likes'] = {}
+            result['likes']['reactions'] = []
+            if len(mapped_likes) == 0:
+                result['likes']['reactions'] = ""
+            else:
+                for l in mapped_likes:
+                    result['likes']['reactions'].append(l['fname'] + " " + l['lname'])
             result['likes']['count'] = x
-            result['likes']['reactions'] = mapped_likes
 
             result['dislikes'] = {}
+            result['dislikes']['reactions'] = []
+            if len(mapped_dislikes) == 0:
+                result['dislikes']['reactions'] = ""
+            else:
+                for d in mapped_dislikes:
+                    result['dislikes']['reactions'].append(d['fname'] + " " + d['lname'])
             result['dislikes']['count'] = y
-            result['dislikes']['reactions'] = mapped_dislikes
+
+            templikes =  ', '.join(result['likes']['reactions'])
+            tempdislikes = ', '.join(result['dislikes']['reactions'])
+            result['likes']['reactions'] = templikes
+            result['dislikes']['reactions'] = tempdislikes
 
             return jsonify(Reactions=result)
         else:

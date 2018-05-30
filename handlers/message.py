@@ -25,6 +25,16 @@ class MessageHandler:
         result['lName'] = row[4]
         return result
 
+    def messagesDict(self, row):
+        result = {}
+        result['msgID'] = row[0]
+        result['message'] = row[1]
+        result['userID'] = row[2]
+        result['fName'] = row[3]
+        result['lName'] = row[4]
+        result['postTime'] = row[5]
+        return result
+
     def simpleMsgToDict(self, row):
         result = {}
         result['message'] = row[0]
@@ -63,7 +73,7 @@ class MessageHandler:
         result = dao.searchMessagesByGroupId(id)
         mapped_result = []
         for r in result:
-            mapped_result.append(self.nameToDict(r))
+            mapped_result.append(self.messagesDict(r))
         return jsonify(Messages=mapped_result)
 
     def searchMessagesOfUserFromGroup(self, uid, cid):#
