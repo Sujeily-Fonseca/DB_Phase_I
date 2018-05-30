@@ -48,14 +48,11 @@ class DashboardDAO:
 
     def getTopUsers(self):
         cursor = self.conn.cursor()
-        query1 = "WITH react AS (SELECT userID, num FROM (SELECT userID, count(userID) as num FROM reactions " \
-                 "WHERE dateStamp = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as X LIMIT 10)," \
-                 "msg AS (SELECT userID, num FROM (SELECT userID, count(userID) as num FROM messages " \
-                 "WHERE date(postTime) = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as Y LIMIT 10)," \
-                 "merged AS (SELECT userID, num FROM ((SELECT * FROM msg) UNION ALL (SELECT * FROM react)) as Z " \
-                 "), totalSum AS (SELECT userID, (SUM(num)) as pito FROM merged GROUP BY userID) " \
-                 "SELECT userID, totalSum.pito, username FROM users  NATURAL INNER JOIN totalSum " \
-                 "ORDER BY totalSum.pito LIMIT 10;"
+        query1 = " WITH msg AS (Select userId, num FROM (SELECT userID, count(userId) as num FROM reactions WHERE dateStamp = date(current_date " \
+                 "AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) AS x LIMIT 10), react AS (SELECT userID, num FROM (SELECT userID, count(userId) " \
+                 "as num FROM messages WHERE date(postTime) = date(current_date AT TIME ZONE 'AST') GROUP BY userID ORDER BY num) as Y LIMIT 10), " \
+                 "merged AS (SELECT userID, num FROM ((SELECT * FROM msg) UNION ALL (SELECT * FROM react)) as Z ), totalSum AS (SELECT userID, SUM(num) " \
+                 "as pito FROM merged GROUP BY userID) SELECT userID, totalSum.pito, username FROM users  NATURAL INNER JOIN totalSum ORDER BY totalSum.pito LIMIT 10;"
         cursor.execute(query1)
         result = []
         for row in cursor:
