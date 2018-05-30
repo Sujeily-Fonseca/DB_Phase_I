@@ -27,16 +27,24 @@ class DashboardDAO:
             result.append(row)
         return result
 
+    # def getlikedislikeStatistics(self):
+    #     cursor = self.conn.cursor()
+    #     query = "WITH (SELECT dateStamp, count(*) as dislikes FROM reactions WHERE isValid='1' AND " \
+    #             "lValue='0' AND dateStamp<=(current_date +1) AND dateStamp >=(current_date -4) GROUP BY dateStamp;) as D," \
+    #             "(SELECT dateStamp, count(*) as likes FROM reactions WHERE isValid='1' AND lValue='1' AND dateStamp<=(current_date +1)" \
+    #             " AND dateStamp >=(current_date -4) GROUP BY dateStamp;) as L, SELECT  L.likes, D.dislikes FROM "
+    #
+
+
     def getTrendingHashtags(self):
         cursor = self.conn.cursor()
-        query = "SELECT hashString FROM (SELECT hashString, count(*) AS hashes FROM hashtags GROUP BY hashString ORDER BY hashes desc) AS B" \
+        query = "SELECT hashString, B.hashes FROM (SELECT hashString, count(*) AS hashes FROM hashtags GROUP BY hashString ORDER BY hashes desc) AS B" \
                 " LIMIT 10;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
-
 
     def getTopUsers(self):
         cursor = self.conn.cursor()
@@ -65,6 +73,7 @@ class DashboardDAO:
         for row in cursor:
             result.append(row)
         return result
+
 
     def getRepliesStatistics(self):
         cursor = self.conn.cursor()

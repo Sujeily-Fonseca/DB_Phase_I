@@ -1,6 +1,11 @@
 from flask import Flask, request
 from LiSS_Dashboard.handler.dashboard import DashboardHandler
+from flask_cors import CORS, cross_origin
+
+# Activate
 app = Flask(__name__)
+# Apply CORS to this app
+CORS(app)
 
 @app.route('/Dashboard/likes', methods=['GET'])
 def dashLikes():
