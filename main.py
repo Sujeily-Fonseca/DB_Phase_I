@@ -59,6 +59,10 @@ def getMessageThatReplied(mid):
 #def getUserByID(id):
 #    return UserHandler().getUserById(id)
 
+@app.route('/MessageApp/user/profile/<int:id>')
+def getProfileById(id):
+    return UserHandler().profileInfoById(id)
+
 @app.route('/MessageApp/users', methods=['GET'])                                    #WORKS REMOTE DB
 def getUserByID():
     return UserHandler().getUserById(request.headers)

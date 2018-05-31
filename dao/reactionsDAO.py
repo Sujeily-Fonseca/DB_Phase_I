@@ -32,7 +32,7 @@ class ReactionsDAO:
     def getAllUserDislikesIllegal(self, userID):
         cursor = self.conn.cursor()
         query = "SELECT msgID FROM (users NATURAL INNER JOIN reactions) INNER JOIN messages using(msgID) " \
-                "WHERE lvalue='1' AND users.userID=%s"
+                "WHERE lvalue='0' AND users.userID=%s"
         cursor.execute(query, (userID,))
         result = []
         for row in cursor:
@@ -99,21 +99,21 @@ class ReactionsDAO:
         disliked = self.getAllUserDislikes(userID)
         likedIllegal = self.getAllUserLikesIllegal(userID)
         dislikedIllegal = self.getAllUserDislikesIllegal(userID)
-        
-        if (len(liked) != 0 and (int(msgID) in (liked[0]) and int(reactionVal) == 1))\
-                or (len(disliked) != 0 and (int(msgID) in (disliked[0]) and int(reactionVal) == 0)):
+
+        if (len(liked) != 0 and ((int(msgID),) in liked and int(reactionVal) == 1))\
+                or (len(disliked) != 0 and ((int(msgID),) in disliked and int(reactionVal) == 0)):
             print("was liked and pressed like or was disliked and pressed dislike")
             query = "UPDATE reactions SET isValid= B'0', dateStamp = current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
-        #
-        elif len(liked) != 0 and (int(msgID) in liked[0] and int(reactionVal) == 0):
+
+        elif len(liked) != 0 and ((int(msgID),) in liked and int(reactionVal) == 0):
             print("was liked and pressed dislike")
             query = "UPDATE reactions SET lValue= B'0', dateStamp =  current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))
 
         #
-        elif len(disliked) != 0 and (int(msgID) in disliked[0] and int(reactionVal) == 1):
+        elif len(disliked) != 0 and ((int(msgID),) in disliked and int(reactionVal) == 1):
             print("was disliked and pressed like")
             query = "UPDATE reactions SET lValue= B'1', dateStamp = current_date AT TIME ZONE 'AST' where UserID = %s and msgID = %s;"
             cursor.execute(query, (userID, msgID,))

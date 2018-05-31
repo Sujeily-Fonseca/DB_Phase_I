@@ -25,6 +25,13 @@ class UserDAO:
             result.append(row)
         return result
 
+    def profileInfoById(self, id):
+        cursor = self.conn.cursor()
+        query = "SELECT username, fName, lName, email, phone FROM users WHERE userID=%s;"
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        return result
+
     def getUserById(self, id):
         cursor = self.conn.cursor()
         query = "SELECT fName, lName, email, phone FROM users WHERE userID=%s;"

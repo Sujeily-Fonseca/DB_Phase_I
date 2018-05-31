@@ -15,6 +15,15 @@ class UserHandler:
         result['password'] = row[5]
         return result
 
+    def fullInfoToDict(self, row):
+        result = {}
+        result['username'] = row[0]
+        result['fName'] = row[1]
+        result['lName'] = row[2]
+        result['email'] = row[3]
+        result['phone'] = row[4]
+        return result
+
     def nameToDict(self, row):
         result = {}
         result['fName'] = row[0]
@@ -52,9 +61,18 @@ class UserHandler:
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
         else:
-            mapped = self.nameToDict(result)
+            mapped = self.mapToDict(result)
             return jsonify(User=mapped)
-    
+
+    def profileInfoById(self, id):
+        dao = UserDAO()
+        result = dao.profileInfoById(id)
+        if result is None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped = self.fullInfoToDict(result)
+            return jsonify(User=mapped)
+
     def getUserByPhone(self, phone):
         dao = UserDAO()
         result = dao.getUserByPhone(phone)
@@ -122,6 +140,7 @@ class UserHandler:
         result['phone'] = phone
         result['password'] = password
         return result
+
     def build_user_login(self, userId):
         result = {}
         result['userId'] = userId
@@ -160,7 +179,7 @@ class UserHandler:
                 dao = UserDAO()
                 userId = dao.validateLogin(username, password)
                 if userId is None:
-                    return jsonify(Error= "User has not been autheticated"), 400
+                    return jsonify(Error= "User has not been authenticated"), 400
                 elif len(userId) == 1:
                     result = self.build_user_login(userId)
                     return jsonify(User_Logged_In=result),201
