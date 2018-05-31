@@ -1,6 +1,7 @@
 #participants table: participantID, groupID, userID
 from dao.groupDAO import GroupDAO
 from dao.contactDAO import ContactDAO
+from dao.userDAO import UserDAO
 import psycopg2
 
 class ParticipantsDAO:
@@ -13,6 +14,15 @@ class ParticipantsDAO:
         cursor = self.conn.cursor()
         query = "SELECT fName, lName, groupName FROM users NATURAL INNER JOIN participants NATURAL INNER JOIN groups;"
         cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getParticipantsForGroup(self, groupID):
+        cursor = self.conn.cursor()
+        query = "SELECT userName FROM users NATURAL INNER JOIN participants where groupId=%s;"
+        cursor.execute(query,(groupID,))
         result = []
         for row in cursor:
             result.append(row)
@@ -45,12 +55,14 @@ class ParticipantsDAO:
             result.append(row)
         return result
 
-    def insertUserToGroup(self, userID, groupID, ownerID):
+    def insertUserToGroup(self, userName, groupID, ownerID):
         gdao = GroupDAO()
         cdao = ContactDAO()
+        udao = UserDAO()
+        userID = udao.getUserIdByUserName(userName)
         result = []
         if int(ownerID) in (gdao.getOwnerId(groupID)) and cdao.isContact(userID, ownerID) and \
-                int(userID) in (self.getAllUsersIdOnGroup(groupID)):
+                not userID in (self.getAllUsersIdOnGroup(groupID)):
             cursor =self.conn.cursor()
             query = "INSERT INTO Participants(groupid,userid) values(%s,%s) returning userid;"
             cursor.execute(query,(groupID,userID,))

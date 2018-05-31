@@ -67,11 +67,11 @@ class GroupHandler:
         if len(form) != 2:
             return jsonify(Error="Malformed post request"), 400
         else:
-            groupName = form['groupName']
+            newGroup = form['newGroup']
             ownerId = form['ownerId']
-            if groupName and ownerId:
+            if newGroup and ownerId:
                 dao = GroupDAO()
-                result_list = dao.insertGroup(groupName, ownerId)
+                result_list = dao.insertGroup(newGroup, ownerId)
                 result = self.build_group_attributes(result_list[0],result_list[1])
                 return jsonify(Group=result), 201
             else:

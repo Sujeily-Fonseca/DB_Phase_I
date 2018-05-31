@@ -120,7 +120,7 @@ def getOwnerFromGroupId(id):
 @app.route('/MessageApp/groups/add', methods=['POST'])                                        #WORKS REMOTE DB
 def addToGroup():
     if(request.method == 'POST'):
-        return ParticipantsHandler().insertUserToGroup(request.form)
+        return ParticipantsHandler().insertUserToGroup(request.get_json())
 
 @app.route('/MessageApp/groups/<int:id>')                                   #WORKS REMOTE DB
 def getGroupByID(id):
@@ -155,6 +155,7 @@ def usersWithHashtag(hid):
     return HashtagHandler().getUsersForHashtag(hid)
 
 #PARTICIPANTS
+#FORCED
 @app.route('/MessageApp/groups/user/<int:uid>')                              #WORKS REMOTE DB
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
@@ -166,6 +167,10 @@ def GroupsOfUserId(gid):
 @app.route('/MessageApp/participants')                           #WORKS REMOTE DB
 def getAllParticipants():
     return ParticipantsHandler().getAllParticipants()
+
+@app.route('/MessageApp/participants/<int:gid>')
+def getParticipantsForGroup(gid):
+    return ParticipantsHandler().getParticipantsForGroup(gid)
 
 #REACTIONS
 @app.route('/MessageApp/likes/<int:id>')                        #WORKS REMOTE DB
@@ -220,6 +225,7 @@ def MsgsWithhashString(gid):
         print("here2")
         if request.args:
             print("here 3")
+            print(request.args)
             return ContainsHandler().getMsgsWithHashString(gid,request.args)
 
 @app.route('/MessageApp/message/hashtag/<int:hid>/<int:gid>')             #WORKS REMOTE DB

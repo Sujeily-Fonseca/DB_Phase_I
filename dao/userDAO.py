@@ -84,6 +84,13 @@ class UserDAO:
             result.append(row)
         return result
 
+    def getUserIdByUserName(self, userName):
+        cursor = self.conn.cursor()
+        query = "SELECT userId FROM users WHERE userName=%s;"
+        cursor.execute(query, (userName,))
+        result = cursor.fetchone()
+        return result
+
     def getUsersByEmailAndFname(self, email, fName):
         cursor = self.conn.cursor()
         query = "SELECT fName, lName, email, phone FROM users WHERE fName=%s AND email=%s;"
