@@ -74,4 +74,4 @@ class ContainsHandler:
         for row in user_list:
             result = self.mapNewToDict(row)
             result_list.append(result)
-        return jsonify(Users=result_list)
+        return jsonify(Hashtags=result_list)
