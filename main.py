@@ -155,7 +155,7 @@ def usersWithHashtag(hid):
     return HashtagHandler().getUsersForHashtag(hid)
 
 #PARTICIPANTS
-#FORCED
+
 @app.route('/MessageApp/groups/user/<int:uid>')                              #WORKS REMOTE DB
 def UsersOfGroupId(uid):
     return ParticipantsHandler().getAllGroupsForUser(uid)
