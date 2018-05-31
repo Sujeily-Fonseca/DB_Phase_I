@@ -20,7 +20,7 @@ class MessageDAO:
 
     def searchMessagesByGroupId(self, id):#
         cursor = self.conn.cursor()
-        query = "SELECT msgID, message, userID, fName, lName FROM users NATURAL INNER JOIN messages WHERE groupID = %s;"
+        query = "SELECT msgID, message, userID, fName, lName, postTime FROM users NATURAL INNER JOIN messages WHERE groupID = %s ORDER BY postTime DESC;"
         cursor.execute(query,(id,))
         result = []
         for row in cursor:
