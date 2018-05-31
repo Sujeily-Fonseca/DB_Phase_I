@@ -34,8 +34,7 @@ def login():
 @app.route('/MessageApp/Auth/register',  methods=['POST'])                                     #WORKS
 def register():
     if request.method == 'POST':
-        return UserHandler().insertUser(request.form)
-    #return "You are now registered as name and last name"
+        return UserHandler().insertUser(request.get_json())
 ###################################################################
 
 
@@ -60,6 +59,10 @@ def getMessageThatReplied(mid):
 #def getUserByID(id):
 #    return UserHandler().getUserById(id)
 
+@app.route('/MessageApp/user/profile/<int:id>')
+def getProfileById(id):
+    return UserHandler().profileInfoById(id)
+
 @app.route('/MessageApp/users', methods=['GET'])                                    #WORKS REMOTE DB
 def getUserByID():
     return UserHandler().getUserById(request.headers)
@@ -77,9 +80,7 @@ def getAllContactsFor(id):
     if request.method == 'GET':
         return UserHandler().getUserContacts(id)
     elif request.method == 'POST':
-        return ContactHandler().insertContact(id, request.form)
-
-
+        return ContactHandler().insertContact(id, request.get_json())
 
 
 #MESSAGES AND CHATS
@@ -88,17 +89,21 @@ def messagesFromGroupId(gid):
     return MessageHandler().searchMessagesByGroupId(gid)
 
 
-@app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>')          #WORKS REMOTE DB
+@app.route('/MessageApp/messages/groups/<int:gid>/user/<int:uid>', methods=['GET', 'POST'])          #WORKS REMOTE DB
 def messagesOfUserFromGroup(uid,gid):
-    return MessageHandler().searchMessagesOfUserFromGroup(uid,gid)
+    if request.method == 'GET':
+        return MessageHandler().searchMessagesOfUserFromGroup(uid, gid)
+    elif request.method=='POST':
+        return MessageHandler().postMessage(uid,gid, request.get_json())
 
 
-@app.route('/MessageApp/messages', methods=['GET', 'POST'])                                          #WORKS REMOTE DB
+
+
+@app.route('/MessageApp/messages', methods=['GET'])                                          #WORKS REMOTE DB
 def messagesByChatName():
     if request.method=='GET':
         return MessageHandler().getAllMessages()
-    elif request.method=='POST':
-        return MessageHandler().postMessage(request.headers, request.form)
+
 
 
 
@@ -125,7 +130,7 @@ def getGroupByID(id):
 @app.route('/MessageApp/groups', methods=['GET', 'POST', 'UPDATE'])                                            #WORKS REMOTE DB
 def searchGroupByName():
     if request.method == 'POST':
-        return GroupHandler().insertGroup(request.form)
+        return GroupHandler().insertGroup(request.get_json())
     elif request.method == 'GET':
         if request.args:
             return GroupHandler().searchGroupByName(request.args)
@@ -190,7 +195,7 @@ def allMessagesDislikes(mid):
 @app.route('/MessageApp/reactions', methods=['GET', 'POST'])
 def allReactions():
     if request.method == 'POST':
-        return ReactionsHandler().insertReactionToMsg(request.form)
+        return ReactionsHandler().insertReactionToMsg(request.get_json())
     elif request.method == 'GET':
         if request.args:
             return ReactionsHandler().getAllReactionsFor(request.args)
@@ -204,9 +209,18 @@ def HashIn(mid):
     return ContainsHandler().getHashIn(mid)
 
 
-@app.route('/MessageApp/message/hashtag/<int:hid>')             #WORKS REMOTE DB
+@app.route('/MessageApp/message/hashtags/<int:hid>')             #WORKS REMOTE DB
 def MsgsWith(hid):
     return ContainsHandler().getMsgsWith(hid)
+
+@app.route('/MessageApp/message/hashtag/<int:gid>', methods=['GET'])             #WORKS REMOTE DB
+def MsgsWithhashString(gid):
+    print("here")
+    if request.method == 'GET':
+        print("here2")
+        if request.args:
+            print("here 3")
+            return ContainsHandler().getMsgsWithHashString(gid,request.args)
 
 @app.route('/MessageApp/message/hashtag/<int:hid>/<int:gid>')             #WORKS REMOTE DB
 def MsgsWithInGroup(hid,gid):

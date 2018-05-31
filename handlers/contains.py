@@ -49,3 +49,29 @@ class ContainsHandler:
             return jsonify(Messages=mapped_results)
         else:
             return jsonify(Error="No messages with hashtags found"), 401
+
+
+
+
+    def mapNewToDict(self, row):
+        result = {}
+        result['msgId'] = row[0]
+        result['message'] = row[1]
+        result['userId'] = row[2]
+        result['fName'] = row[3]
+        result['lName'] = row[4]
+        return result
+
+    def getMsgsWithHashString(self, gid, args):
+        hashString = args.get("hashString")
+        dao = ContainsDAO()
+        user_list = []
+        if(len(args)==1) and hashString:
+            user_list=dao.getMsgsWithHashString(gid,hashString)
+        else:
+            return jsonify(Error = "Malformed query string"), 400
+        result_list = []
+        for row in user_list:
+            result = self.mapNewToDict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
