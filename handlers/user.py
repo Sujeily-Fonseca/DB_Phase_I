@@ -43,7 +43,9 @@ class UserHandler:
         result['fName'] = row[0]
         result['lName'] = row[1]
         result['phone'] = row[2]
+        result['userName'] = row[3]
         return result
+
 
     def getAllUsers(self):
         dao = UserDAO()
@@ -178,6 +180,7 @@ class UserHandler:
             if username and password:
                 dao = UserDAO()
                 userId = dao.validateLogin(username, password)
+                print(userId)
                 if userId is None:
                     return jsonify(Error= "User has not been authenticated"), 400
                 elif len(userId) == 1:

@@ -23,6 +23,11 @@ class ParticipantsHandler:
         result['lname'] = row[2]
         return result
 
+    def usersToDict_2(self, row):
+        result = {}
+        result['userName'] = row[0]
+        return result
+
     def groupsToDict(self, row):
         result = {}
         result['groupID'] = row[0]
@@ -50,7 +55,7 @@ class ParticipantsHandler:
         result = dao.getAllUsersOnGroup(groupID)
         mapped_results = []
         for r in result:
-            mapped_results.append(self.usersToDict(r))
+            mapped_results.append(self.usersToDict_2(r))
         return jsonify(Participants=mapped_results)
 
     def getAllGroupsForUser(self, userID):
@@ -68,7 +73,7 @@ class ParticipantsHandler:
         return result
 
     def insertUserToGroup(self, form):
-        print("form: ", form)
+        print("formal: ", form)
         if len(form) != 3:
             return jsonify(Error="Malformed post request"), 400
         else:

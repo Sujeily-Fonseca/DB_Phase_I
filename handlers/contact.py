@@ -18,6 +18,14 @@ class ContactHandler:
         result['phone'] = row[3]
         return result
 
+    def NameToDict_2(self, row):
+        result = {}
+        result['fName'] = row[0]
+        result['lName'] = row[1]
+        result['phone'] = row[3]
+        result['userName'] = row[4]
+        return result
+
     def getAllContacts(self):
         return self.data
 
