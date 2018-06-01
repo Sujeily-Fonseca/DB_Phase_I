@@ -130,7 +130,7 @@ class UserDAO:
 
     def getUserContacts(self,uid):
         cursor = self.conn.cursor()
-        query = "SELECT fName, lName, phone FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
+        query = "SELECT fName, lName, phone, userName FROM contacts, users WHERE contactID=userID AND contactOfID=%s;"
         cursor.execute(query,(uid,))
         result = []
         for row in cursor:
@@ -162,4 +162,5 @@ class UserDAO:
         query = "Select userId FROM users WHERE userName=%s AND password=%s;"
         cursor.execute(query,(username, password,))
         result = cursor.fetchone()
+        print(result)
         return result
