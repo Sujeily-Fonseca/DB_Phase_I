@@ -138,6 +138,12 @@ class MessageHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
+    def getReplyForDisplay(self, repID):
+        dao = MessageDAO()
+        result = dao.getRepliesRec(repID)
+        mapped = {'replyString':result}
+        return jsonify(ReplyMessage=mapped)
+
 
 
 
