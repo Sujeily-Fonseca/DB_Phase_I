@@ -92,6 +92,14 @@ class MessageDAO:
         self.conn.commit()
         return result
 
+    def getRepliesRec(self, repID):
+        mid = self.getMessageThatReplied(repID)
+        if len(mid) == 0:
+            return self.getMessageByMsgId(repID)[0][0]
+        else:
+            message = "\"RE: " + self.getRepliesRec(mid[0][0]) + "\" " + self.getMessageByMsgId(repID)[0][0]
+            print(message)
+            return message
 
     def postMessage(self, userId, groupId, message, replyValue, repliedId):
         cursor = self.conn.cursor()
@@ -124,4 +132,5 @@ class MessageDAO:
 
         self.conn.commit()
         return result
+
 
