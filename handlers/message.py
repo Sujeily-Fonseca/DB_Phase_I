@@ -124,15 +124,18 @@ class MessageHandler:
         return result
 
     def postMessage(self, userId, groupId, form2):
+        print(form2)
         if len(form2) != 3 :
+            print("here")
             return jsonify(Error="Malformed post request"), 400
         else:
             newText = form2['newText']
             replyValue = form2['replyValue']
-            replyId = form2['replyId']
+            repliedId = form2['repliedId']
             if newText:
+                print("here2")
                 dao = MessageDAO()
-                result_list = dao.postMessage(userId, groupId,newText, replyValue, replyId)
+                result_list = dao.postMessage(userId, groupId,newText, replyValue, repliedId)
                 result = self.build_message_attributes(result_list)
                 return jsonify(Message=result), 201
             else:
@@ -140,9 +143,10 @@ class MessageHandler:
 
     def getReplyForDisplay(self, repID):
         dao = MessageDAO()
-        result = dao.getRepliesRec(repID)
-        mapped = {'replyString':result}
-        return jsonify(ReplyMessage=mapped)
+        resultingString=dao.getRepliesRec(repID)
+        result = dao.updateReply(resultingString,repID)
+        mapped = {'replyMsgId':result}
+        return jsonify(ReplyMsgID=mapped)
 
 
 

@@ -92,12 +92,20 @@ class MessageDAO:
         self.conn.commit()
         return result
 
+    def updateReply(self, msgString,messageID):
+        cursor = self.conn.cursor()
+        query = "UPDATE messages SET message=%s WHERE msgId=%s returning msgID;"
+        cursor.execute(query,(msgString,messageID))
+        result = cursor.fetchone()
+        self.conn.commit()
+        return result
+
     def getRepliesRec(self, repID):
         mid = self.getMessageThatReplied(repID)
         if len(mid) == 0:
-            return self.getMessageByMsgId(repID)[0][0]
+            return str(self.getMessageByMsgId(repID)[0][0])
         else:
-            message = "\"RE: " + self.getRepliesRec(mid[0][0]) + "\" " + self.getMessageByMsgId(repID)[0][0]
+            message = "\"RE: " + str(self.getRepliesRec(mid[0][0])) + "\" " + str(self.getMessageByMsgId(repID)[0][0])
             return message
 
     def postMessage(self, userId, groupId, message, replyValue, repliedId):
@@ -115,8 +123,8 @@ class MessageDAO:
             cursor.execute(query, (message, userId, groupId, ))
             for row in cursor:
                 result.append(row)
-            print(replyValue)
-            if bool(replyValue):
+            print(int(replyValue)=='1')
+            if replyValue=='1':
                 self.insertReply(int(repliedId), result[0])
             if len(hashtags)!=0:
                 for element in hashtags:
