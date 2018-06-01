@@ -53,6 +53,10 @@ def getMessageBymsgId(mid):
 def getMessageThatReplied(mid):
     return MessageHandler().getMessageThatReplied(mid)
 
+@app.route('/MessageApp/messages/reply/<int:repID>')
+def getReplyString(repID):
+    return MessageHandler().getReplyForDisplay(repID)
+
 
 #USERS
 #@app.route('/MessageApp/users/<int:id>')                                    #WORKS REMOTE DB
